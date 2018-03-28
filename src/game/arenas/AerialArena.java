@@ -22,13 +22,20 @@ public class AerialArena {
 
 	}
 
-
+	/**
+	 * @param addRacer ,add a new racer type {@link Airplane}
+	 * @return boolean value
+	 */
 	public boolean addRacer(Airplane racer) {
 		if(this.helicopters.size()+this.airplains.size()<=5) {
 		return airplains.add(racer);
 		}
 		return false;
 	}
+	/**
+	 * @param addRacer ,add a new racer type {@link Helicopter}
+	 * @return boolean value
+	 */
 	public boolean addRacer(Helicopter racer) {
 		if(this.helicopters.size()+this.airplains.size()<=5) {
 			return helicopters.add(racer);
@@ -36,6 +43,9 @@ public class AerialArena {
 		return false;
 	}
 
+	/**
+	 * @param initRace ,initialization of the race
+	 */
 	public void initRace() {
 		for(Airplane x:airplains) {
 			x.initRace(this, start, finish);
@@ -45,7 +55,10 @@ public class AerialArena {
 		}
 
 	}
-
+	/**
+	 * @param hasActiveRacers ,checks for active racers in the Arrays
+	 * @return boolean value
+	 */
 	public boolean hasActiveRacers() {
 		boolean flag =false;
 		if(this.airplains.size()!=0) {
@@ -56,7 +69,10 @@ public class AerialArena {
 		}
 		return flag;
 	}
-
+	/**
+	 * @param playTurn ,calls move method in each array
+	 * 
+	 */
 	public void playTurn() {
 		if(!airplains.isEmpty()) {
 			for(Airplane x:airplains) {
@@ -77,6 +93,10 @@ public class AerialArena {
 			}
 		}
 	}
+	/**
+	 * @param crossFinishLine ,adds the finish racers to the finishd array
+	 * @return returns the place of the racer
+	 */
 	public int crossFinishLine(Airplane airplane) {
 		if(airplane instanceof Airplane) {
 			this.finishd.add(airplane);
@@ -84,6 +104,10 @@ public class AerialArena {
 		}
 		return -1;
 	}
+	/**
+	 * @param crossFinishLine ,adds the finish racers to the finishd array
+	 * 
+	 */
 	public int crossFinishLine(Helicopter helicopter) {
 		if(helicopter instanceof Helicopter) {
 			this.finishd.add(helicopter);
@@ -91,7 +115,10 @@ public class AerialArena {
 		}
 		return -1;
 	}
-
+	/**
+	 * @param printFinish ,prints the finishd from first to the last
+	 * 
+	 */
 	public void printFinish() {
 		System.out.println("Aerial Race ended!");
 		for(Object x:finishd) {
