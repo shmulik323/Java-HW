@@ -27,7 +27,7 @@ public class AerialArena {
 	 * @return boolean value
 	 */
 	public boolean addRacer(Airplane racer) {
-		if(this.helicopters.size()+this.airplains.size()<=5) {
+		if(this.helicopters.size()+this.airplains.size()< MAX_RACERS) {
 		return airplains.add(racer);
 		}
 		return false;
@@ -37,7 +37,7 @@ public class AerialArena {
 	 * @return boolean value
 	 */
 	public boolean addRacer(Helicopter racer) {
-		if(this.helicopters.size()+this.airplains.size()<=5) {
+		if(this.helicopters.size()+this.airplains.size()< MAX_RACERS) {
 			return helicopters.add(racer);
 		}
 		return false;

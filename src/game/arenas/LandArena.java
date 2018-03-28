@@ -24,12 +24,14 @@ public class LandArena {
 
 
 	public boolean addRacer(Car racer) {
-		return cars.add(racer);
-
+		if(this.cars.size()+this.horses.size()< MAX_RACERS)
+			return cars.add(racer);
+		return false;
 	}
 	public boolean addRacer(Horse racer) {
-		return horses.add(racer);
-
+		if(this.cars.size()+this.horses.size()< MAX_RACERS)
+			return horses.add(racer);
+		return false;
 	}
 
 	public void initRace() {

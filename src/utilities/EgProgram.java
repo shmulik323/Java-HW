@@ -47,7 +47,7 @@ public class EgProgram {
 		game.addRacer(new Airplane("Frank", 250, 8));
 		game.addRacer(new Airplane("Matt", 230, 8));
 		game.addRacer(new Airplane("shmu", 230, 8));
-		game.addRacer(new Airplane("alex", 230, 8));
+		game.addRacer(new Airplane("alex", 200, 8));
 		game.addRacer(new Airplane("lior", 230, 8));
 		game.initRace();
 		game.startRace();

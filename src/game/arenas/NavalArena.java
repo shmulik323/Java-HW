@@ -24,12 +24,14 @@ public class NavalArena {
 
 
 	public boolean addRacer(SpeedBoat racer) {
-		return speedboats.add(racer);
-
+		if(this.rowboats.size()+this.speedboats.size()< MAX_RACERS)
+			return speedboats.add(racer);
+		return false;
 	}
 	public boolean addRacer(RowBoat racer) {
-		return rowboats.add(racer);
-
+		if(this.rowboats.size()+this.speedboats.size()< MAX_RACERS)
+			return rowboats.add(racer);
+		return false;
 	}
 
 	public void initRace() {
