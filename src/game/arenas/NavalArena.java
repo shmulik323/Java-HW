@@ -43,10 +43,14 @@ public class NavalArena {
 	}
 
 	public boolean hasActiveRacers() {
+		boolean flag=false;
 		if(this.speedboats.size()!=0) {
-			return true;
+			flag = true;
 		}
-		return false;
+		if(this.rowboats.size()!=0) {
+			flag = true;
+		}
+		return flag;
 	}
 
 	public void playTurn() {
@@ -59,6 +63,15 @@ public class NavalArena {
 				}
 			}
 		}
+		if(!rowboats.isEmpty()) {
+			for(RowBoat x:rowboats) {
+				if(!(x.getFinish().getX()-x.move(FRICTION).getX()>0)) {
+					x.setPlace(this.crossFinishLine(x));
+					this.rowboats.remove(x);
+					break;
+				}
+			}
+		}
 	}
 	public int crossFinishLine(SpeedBoat SpeedBoat) {
 		if(SpeedBoat instanceof SpeedBoat) {
@@ -67,12 +80,18 @@ public class NavalArena {
 		}
 		return -1;
 	}
-
+	public int crossFinishLine(RowBoat rowBoat) {
+		if(rowBoat instanceof RowBoat) {
+			this.finishd.add(rowBoat);
+			return this.finishd.indexOf(rowBoat);
+		}
+		return -1;
+	}
 	public void printFinish() {
 		System.out.println("NavalArena Race ended!");
 		for(Object x:finishd) {
 			System.out.println(x.toString());
-			
+
 		}
 	}
 }

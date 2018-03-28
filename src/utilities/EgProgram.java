@@ -3,10 +3,13 @@ package utilities;
 import game.GameEngine;
 import game.arenas.AerialArena;
 import game.arenas.LandArena;
+import game.arenas.NavalArena;
 import game.racers.Airplane;
 import game.racers.Car;
 import game.racers.Helicopter;
 import game.racers.Horse;
+import game.racers.RowBoat;
+import game.racers.SpeedBoat;
 
 // see output at end of file
 
@@ -18,6 +21,7 @@ public class EgProgram {
 		GameEngine game = GameEngine.getInstance();
 		AerialArena air = new AerialArena(start, finish);
 		LandArena land =new LandArena(start, finish);
+		NavalArena naval =new NavalArena(start, finish);
 		game.setArena(air);
 		game.addRacer(new Airplane("Bob", 220, 10));
 		game.addRacer(new Helicopter("shmuel", 175, 10));
@@ -54,6 +58,15 @@ public class EgProgram {
 		game.addRacer(new Car("John", 220, 10));
 		game.addRacer(new Car("Frank", 250, 8));
 		game.addRacer(new Horse("Matt", 230, 8));
+		game.initRace();
+		game.startRace();
+		System.out.println("---- 5 ----");
+		naval = new NavalArena(start, new Point(8000, 0));
+		game.setArena(naval);
+		game.addRacer(new SpeedBoat("Bob ", 200, 30));
+		game.addRacer(new SpeedBoat("John", 220, 10));
+		game.addRacer(new RowBoat("Frank", 170, 8));
+		game.addRacer(new RowBoat("Matt", 100, 8));
 		game.initRace();
 		game.startRace();
 	}

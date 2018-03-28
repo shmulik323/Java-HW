@@ -3,10 +3,13 @@ package game;
 
 import game.arenas.AerialArena;
 import game.arenas.LandArena;
+import game.arenas.NavalArena;
 import game.racers.Airplane;
 import game.racers.Car;
 import game.racers.Helicopter;
 import game.racers.Horse;
+import game.racers.RowBoat;
+import game.racers.SpeedBoat;
 import utilities.ArenaType;
 
 public class GameEngine {
@@ -14,6 +17,7 @@ public class GameEngine {
 	private static GameEngine instance = null;
 	private AerialArena airArena ;
 	private LandArena landArena ;
+	private NavalArena navalArena ;
 	private ArenaType activeArena;
 
 	protected GameEngine() {
@@ -43,6 +47,11 @@ public class GameEngine {
 			activeArena = ArenaType.LANDARENA;
 			this.setActiveArena(activeArena);;
 		}
+		if(arena instanceof NavalArena) {
+			this.setNavalArena((NavalArena)arena);
+			activeArena = ArenaType.NEVALARENA;
+			this.setActiveArena(activeArena);;
+		}
 		return false;
 
 
@@ -65,6 +74,14 @@ public class GameEngine {
 			this.getLandArena().addRacer((Horse) racer);
 			return true;
 		}
+		if(racer instanceof SpeedBoat) {
+			this.getNavalArena().addRacer((SpeedBoat) racer);
+			return true;
+		}
+		if(racer instanceof RowBoat) {
+			this.getNavalArena().addRacer((RowBoat) racer);
+			return true;
+		}
 		return false;
 
 	}
@@ -75,6 +92,9 @@ public class GameEngine {
 		}
 		if(getActiveArena() == ArenaType.LANDARENA) {
 			landArena.initRace();
+		}
+		if(getActiveArena() == ArenaType.NEVALARENA) {
+			navalArena.initRace();
 		}
 
 	}
@@ -92,6 +112,13 @@ public class GameEngine {
 				landArena.playTurn();
 			}
 			landArena.printFinish();
+
+		}
+		if(getActiveArena() == ArenaType.NEVALARENA) {
+			while(getNavalArena().hasActiveRacers()) {
+				navalArena.playTurn();
+			}
+			navalArena.printFinish();
 
 		}
 	}
@@ -136,6 +163,20 @@ public class GameEngine {
 	 */
 	public void setLandArena(LandArena landArena) {
 		this.landArena = landArena;
+	}
+
+	/**
+	 * @return the navalArena
+	 */
+	public NavalArena getNavalArena() {
+		return navalArena;
+	}
+
+	/**
+	 * @param navalArena the navalArena to set
+	 */
+	public void setNavalArena(NavalArena navalArena) {
+		this.navalArena = navalArena;
 	}
 
 }

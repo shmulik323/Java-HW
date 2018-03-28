@@ -42,6 +42,7 @@ public class RowBoat {
 			this.setCurrentLocation(this.getCurrentLocation().getX()+this.getCurrentSpeed());
 			return this.getCurrentLocation();
 		}
+		this.setCurrentSpeed(maxSpeed);
 		this.setCurrentLocation(this.getCurrentLocation().getX()+this.getCurrentSpeed());
 		return this.getCurrentLocation();
 	}
