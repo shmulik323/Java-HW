@@ -4,49 +4,49 @@
 package utilities;
 
 import game.GameEngine;
-import game.arenas.*;
-import game.racers.*;
+import game.arenas.AerialArena;
+import game.arenas.LandArena;
+import game.arenas.NavalArena;
+import game.racers.Airplane;
+import game.racers.Car;
+import game.racers.Helicopter;
+import game.racers.Horse;
+import game.racers.RowBoat;
+import game.racers.SpeedBoat;
 
 /**
- * @author shmuel moha 204568323
- * @author alexs vizman 314342064
+ * @author Bar Ohayon
  *
  */
 public class Program {
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-		Point start = new Point(-150,-5);
+		Point start = new Point(-150, -5);
 		System.out.println("start = " + start);
+<<<<<<< Upstream, based on origin/master
 		Point finish= new Point(150000,0);
 		
+=======
+		Point finish = new Point(15000, 0);
+>>>>>>> bfb81bc for alex
 		AerialArena air = new AerialArena(start, finish);
 		NavalArena sea = new NavalArena(start, finish);
 		LandArena land = new LandArena(start, finish);
-		
 		System.out.print("setX(-10): ");
 		System.out.println(finish.setX(-10));
 		System.out.println("finish = " + finish);
 		System.out.print("setX(10): ");
 		System.out.println(finish.setX(10));
-		
 		System.out.println("air.finish = " + air.getFinish());
-
 		GameEngine game = GameEngine.getInstance();
 		System.out.println("----------");
-		
 		System.out.println("arena type = " + game.getArenaType());
 		System.out.print("Set AerialArena: ");
 		System.out.println(game.setArena(air));
 		System.out.println("arena type = " + game.getArenaType());
 		System.out.print("add Plane: ");
-		System.out.println(game.addRacer(new Airplane("plane",120,5)));
+		System.out.println(game.addRacer(new Airplane("plane", 120, 5)));
 		System.out.print("add Heli: ");
-		System.out.println(game.addRacer(new Helicopter("chopper",110,15)));
+		System.out.println(game.addRacer(new Helicopter("chopper", 110, 15)));
 		System.out.print("add Car: ");
 		System.out.println(game.addRacer(new Car("car", 100, 10)));
 		System.out.print("add SpeedBoat: ");
@@ -57,7 +57,6 @@ public class Program {
 		System.out.print("Set NavalArena: ");
 		System.out.println(game.setArena(sea));
 		System.out.println("arena type = " + game.getArenaType());
-		
 		System.out.print("add SpeedBoat: ");
 		System.out.println(game.addRacer(new SpeedBoat("sb1", 100, 25)));
 		System.out.print("add SpeedBoat: ");
@@ -74,15 +73,12 @@ public class Program {
 		System.out.println(game.addRacer(new RowBoat("rb3", 150, 9)));
 		System.out.print("add RowBoat: ");
 		System.out.println(game.addRacer(new RowBoat("rb4", 140, 35)));
-		
 		game.initRace();
 		game.startRace();
-		
 		System.out.println("----------");
 		System.out.print("Set LandArena: ");
 		System.out.println(game.setArena(land));
 		System.out.println("arena type = " + game.getArenaType());
-		
 		System.out.print("add Car: ");
 		System.out.println(game.addRacer(new Car("car1", 100, 2)));
 		System.out.print("add RowBoat: ");
@@ -103,12 +99,8 @@ public class Program {
 		System.out.println(game.addRacer(new Horse("horse4", 99, 8)));
 		System.out.print("add horse: ");
 		System.out.println(game.addRacer(new Horse("horse5", 95, 12)));
-		
 		game.initRace();
 		game.startRace();
-		
-		
-		
 	}
 
 }
