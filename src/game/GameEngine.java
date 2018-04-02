@@ -28,64 +28,87 @@ public class GameEngine {
 		// TODO Auto-generated method stub
 
 	}
-
+	/**
+	 * gets the instance of the GameEngine
+	 * @return instance
+	 */
 	public static GameEngine getInstance() {
 		if (instance == null) {
 			instance = new GameEngine();
 		}
 		return instance;
 	}
-
+	/**
+	 * Sets the needed arena depending on the given parameter
+	 * @param arena
+	 * @return boolean value
+	 */
 	public boolean setArena(Object arena) {
 		if(arena instanceof AerialArena) {
 			this.setAirArena((AerialArena)arena);
 			activeArena = ArenaType.AERIALARENA;
-			this.setActiveArena(activeArena);;
+			this.setActiveArena(activeArena);
+			return true;
 		}
 		if(arena instanceof LandArena) {
 			this.setLandArena((LandArena)arena);
 			activeArena = ArenaType.LANDARENA;
-			this.setActiveArena(activeArena);;
+			this.setActiveArena(activeArena);
+			return true;
 		}
 		if(arena instanceof NavalArena) {
 			this.setNavalArena((NavalArena)arena);
 			activeArena = ArenaType.NEVALARENA;
-			this.setActiveArena(activeArena);;
+			this.setActiveArena(activeArena);
+			return true;
 		}
 		return false;
 
 
 	}
-
+	/**
+	 * adds new racer type to the race into the matching arena
+	 * @param racer
+	 * @return boolean value
+	 */
 	public boolean addRacer(Object racer) {
+		if(this.getActiveArena() == ArenaType.AERIALARENA) {
 		if(racer instanceof Airplane) {
-			this.getAirArena().addRacer((Airplane) racer);
-			return true;
+			return this.getAirArena().addRacer((Airplane) racer);
+		
 		}
 		if(racer instanceof Helicopter) {
-			this.getAirArena().addRacer((Helicopter) racer);
-			return true;
-		}
-		if(racer instanceof Car) {
-			this.getLandArena().addRacer((Car) racer);
-			return true;
-		}
-		if(racer instanceof Horse) {
-			this.getLandArena().addRacer((Horse) racer);
-			return true;
-		}
-		if(racer instanceof SpeedBoat) {
-			this.getNavalArena().addRacer((SpeedBoat) racer);
-			return true;
-		}
-		if(racer instanceof RowBoat) {
-			this.getNavalArena().addRacer((RowBoat) racer);
-			return true;
+			return this.getAirArena().addRacer((Helicopter) racer);
+
 		}
 		return false;
-
+		}
+		if(this.getActiveArena() == ArenaType.LANDARENA) {
+		if(racer instanceof Car) {
+			return this.getLandArena().addRacer((Car) racer);
+		
+		}
+		if(racer instanceof Horse) {
+			return this.getLandArena().addRacer((Horse) racer);
+			
+		}
+		return false;
+		}
+		if(this.getActiveArena() == ArenaType.NEVALARENA) {
+		if(racer instanceof SpeedBoat) {
+			return this.getNavalArena().addRacer((SpeedBoat) racer);
+			 
+		}
+		if(racer instanceof RowBoat) {
+			return this.getNavalArena().addRacer((RowBoat) racer);
+		}
+		return false;
+		}
+		return false;
 	}
-
+	/**
+	 * Initialization of the race in the matching arena we chose
+	 */
 	public void initRace() {
 		if(getActiveArena() == ArenaType.AERIALARENA) {
 			airArena.initRace();
@@ -98,7 +121,11 @@ public class GameEngine {
 		}
 
 	}
-
+	/**
+	 * starts the race in the matching arena type
+	 * plays the turns while they are active racers
+	 * prints the finished racers
+	 */
 	public void startRace() {
 		if(getActiveArena() == ArenaType.AERIALARENA) {
 			while(getAirArena().hasActiveRacers()) {
@@ -131,7 +158,7 @@ public class GameEngine {
 	}
 
 	/**
-	 * @param activeArena the activeArena to set
+	 * @param activeArena' the activeArena to set
 	 */
 	public void setActiveArena(ArenaType activeArena) {
 		this.activeArena = activeArena;
@@ -145,7 +172,7 @@ public class GameEngine {
 	}
 
 	/**
-	 * @param airArena the airArena to set
+	 * @param airArena, the airArena to set
 	 */
 	public void setAirArena(AerialArena airArena) {
 		this.airArena = airArena;
@@ -159,7 +186,7 @@ public class GameEngine {
 	}
 
 	/**
-	 * @param landArena the landArena to set
+	 * @param landArena, the landArena to set
 	 */
 	public void setLandArena(LandArena landArena) {
 		this.landArena = landArena;
@@ -177,6 +204,13 @@ public class GameEngine {
 	 */
 	public void setNavalArena(NavalArena navalArena) {
 		this.navalArena = navalArena;
+	}
+
+	public String getArenaType() {
+		if(this.getActiveArena()==null) {
+			return null;
+		}
+		return this.getActiveArena().toString();
 	}
 
 }

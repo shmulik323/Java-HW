@@ -4,6 +4,7 @@ import game.racers.Car;
 import game.racers.Horse;
 import utilities.Point;
 
+
 public class LandArena {
 	Point start;
 	Point finish;
@@ -21,19 +22,30 @@ public class LandArena {
 		// TODO Auto-generated method stub
 
 	}
-
-
+	
+	/**
+	 * 
+	 * @param racer, Adds a new racer type {@link Car}
+	 * @return boolean value
+	 */
 	public boolean addRacer(Car racer) {
 		if(this.cars.size()+this.horses.size()< MAX_RACERS)
 			return cars.add(racer);
 		return false;
 	}
+	/**
+	 * 
+	 * @param racer , Adds a new racer type {@link Horse}
+	 * @return boolean value
+	 */
 	public boolean addRacer(Horse racer) {
 		if(this.cars.size()+this.horses.size()< MAX_RACERS)
 			return horses.add(racer);
 		return false;
 	}
-
+	/**
+	 * @param initRace, initialization of the race
+	 */
 	public void initRace() {
 		for(Car x:cars) {
 			x.initRace(this, start, finish);
@@ -43,7 +55,10 @@ public class LandArena {
 		}
 
 	}
-
+	/**
+	 * @param hasActiveRacers, checks for active racers in the Arrays
+	 * @return boolean value
+	 */
 	public boolean hasActiveRacers() {
 		boolean flag = false;
 		if(this.cars.size()!=0) {
@@ -54,7 +69,9 @@ public class LandArena {
 		}
 		return flag;
 	}
-
+	/**
+	 * @param playTurn ,calls move method in each array
+	 */
 	public void playTurn() {
 		if(!cars.isEmpty()) {
 			for(Car x:cars) {
@@ -75,6 +92,10 @@ public class LandArena {
 			}
 		}
 	}
+	/**
+	 * @param crossFinishLine ,adds the finish racers to the finished array
+	 * @return returns the place of the racer
+	 */
 	public int crossFinishLine(Car Car) {
 		if(Car instanceof Car) {
 			this.finishd.add(Car);
@@ -82,6 +103,11 @@ public class LandArena {
 		}
 		return -1;
 	}
+	/**
+	 * 
+	 * @param crossFinishLine,adds the finished racers to the finished array
+	 * @return place of the racer
+	 */
 	public int crossFinishLine(Horse horse) {
 		if(horse instanceof Horse) {
 			this.finishd.add(horse);
@@ -89,7 +115,10 @@ public class LandArena {
 		}
 		return -1;
 	}
-
+	/**
+	 * @param printFinish ,prints the finished from first to the last
+	 * 
+	 */
 	public void printFinish() {
 		System.out.println("LandArena Race ended!");
 		for(Object x:finishd) {

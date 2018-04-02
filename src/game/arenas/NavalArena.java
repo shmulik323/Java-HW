@@ -22,18 +22,29 @@ public class NavalArena {
 
 	}
 
-
+	/**
+	 * 
+	 * @param addRacer, adds a new racer type {@link SpeedBoat}
+	 * @return boolean value
+	 */
 	public boolean addRacer(SpeedBoat racer) {
 		if(this.rowboats.size()+this.speedboats.size()< MAX_RACERS)
 			return speedboats.add(racer);
 		return false;
 	}
+	/**
+	 * 
+	 * @param addRacer, adds a new racer type {@link RowBoat}
+	 * @return boolean value
+	 */
 	public boolean addRacer(RowBoat racer) {
 		if(this.rowboats.size()+this.speedboats.size()< MAX_RACERS)
 			return rowboats.add(racer);
 		return false;
 	}
-
+	/**
+	 * @param initRace, initialization of the race
+	 */
 	public void initRace() {
 		for(SpeedBoat x:speedboats) {
 			x.initRace(this, start, finish);
@@ -43,7 +54,10 @@ public class NavalArena {
 		}
 
 	}
-
+	/**
+	 * @param hasActiveRavers, checks for active racers in the Arrays
+	 * @return boolean value
+	 */
 	public boolean hasActiveRacers() {
 		boolean flag=false;
 		if(this.speedboats.size()!=0) {
@@ -54,7 +68,9 @@ public class NavalArena {
 		}
 		return flag;
 	}
-
+	/**
+	 * @playTurn, calls move method in each array
+	 */
 	public void playTurn() {
 		if(!speedboats.isEmpty()) {
 			for(SpeedBoat x:speedboats) {
@@ -75,6 +91,11 @@ public class NavalArena {
 			}
 		}
 	}
+	/**
+	 * 
+	 * @param crossFinishLine,adds the finished racers to the finished array
+	 * @return place of the racer
+	 */
 	public int crossFinishLine(SpeedBoat SpeedBoat) {
 		if(SpeedBoat instanceof SpeedBoat) {
 			this.finishd.add(SpeedBoat);
@@ -82,6 +103,11 @@ public class NavalArena {
 		}
 		return -1;
 	}
+	/**
+	 * 
+	 * @param crossFinishLine,adds the finished racers to the finished array
+	 * @return place of the racer
+	 */
 	public int crossFinishLine(RowBoat rowBoat) {
 		if(rowBoat instanceof RowBoat) {
 			this.finishd.add(rowBoat);
@@ -89,6 +115,10 @@ public class NavalArena {
 		}
 		return -1;
 	}
+	/**
+	 * @param printFinish ,prints the finished from first to the last
+	 * 
+	 */
 	public void printFinish() {
 		System.out.println("NavalArena Race ended!");
 		for(Object x:finishd) {

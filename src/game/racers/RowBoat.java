@@ -29,13 +29,22 @@ public class RowBoat {
 		this.setMaxSpeed(75);
 	}
 
-	
+	/**
+	 * initialization of the race, arena type starting location and finish location
+	 * @param arena
+	 * @param start
+	 * @param finish
+	 */
 	public void initRace(NavalArena arena, Point start, Point finish) {
 		this.setArena(arena);
 		this.setCurrentLocation(start.getX());
 		this.setFinish(finish);
 	}
-	
+	/**
+	 * moves the racer and returns the current location
+	 * @param friction
+	 * @return point object, current location
+	 */
 	public Point move(double friction) {
 		if((this.getMaxSpeed()-this.getCurrentSpeed() >0)){
 			this.setCurrentSpeed(this.getCurrentSpeed()+(this.getAcceleration()*friction));

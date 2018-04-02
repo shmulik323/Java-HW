@@ -5,16 +5,17 @@ import game.racers.Helicopter;
 import utilities.Point;
 
 public class AerialArena {
-	Point start;
-	Point finish;
-	double FRICTION =0.4;
-	int MAX_RACERS =6;
-	ArrayList<Airplane> airplains=new ArrayList<Airplane>();
-	ArrayList<Helicopter> helicopters=new ArrayList<Helicopter>();
-	ArrayList<Object> finishd = new ArrayList<Object>();
+	private Point start;
+	private Point finish;
+	private double FRICTION =0.4;
+	private int MAX_RACERS =6;
+	private ArrayList<Airplane> airplains=new ArrayList<Airplane>();
+	private ArrayList<Helicopter> helicopters=new ArrayList<Helicopter>();
+	private ArrayList<Object> finishd = new ArrayList<Object>();
+	
 	public AerialArena(Point start, Point finish) {
-		this.start=start;
-		this.finish=finish;
+		this.setStart(start);
+		this.setFinish(finish);
 	}
 
 	public static void main(String[] args) {
@@ -27,8 +28,8 @@ public class AerialArena {
 	 * @return boolean value
 	 */
 	public boolean addRacer(Airplane racer) {
-		if(this.helicopters.size()+this.airplains.size()< MAX_RACERS) {
-		return airplains.add(racer);
+		if(this.getHelicopters().size()+this.getAirplains().size()< getMAX_RACERS()) {
+		return getAirplains().add(racer);
 		}
 		return false;
 	}
@@ -37,8 +38,8 @@ public class AerialArena {
 	 * @return boolean value
 	 */
 	public boolean addRacer(Helicopter racer) {
-		if(this.helicopters.size()+this.airplains.size()< MAX_RACERS) {
-			return helicopters.add(racer);
+		if(this.getHelicopters().size()+this.getAirplains().size()< getMAX_RACERS()) {
+			return getHelicopters().add(racer);
 		}
 		return false;
 	}
@@ -47,11 +48,11 @@ public class AerialArena {
 	 * @param initRace ,initialization of the race
 	 */
 	public void initRace() {
-		for(Airplane x:airplains) {
-			x.initRace(this, start, finish);
+		for(Airplane x:getAirplains()) {
+			x.initRace(this, getStart(), getFinish());
 		}
-		for(Helicopter x:helicopters) {
-			x.initRace(this, start, finish);
+		for(Helicopter x:getHelicopters()) {
+			x.initRace(this, getStart(), getFinish());
 		}
 
 	}
@@ -61,10 +62,10 @@ public class AerialArena {
 	 */
 	public boolean hasActiveRacers() {
 		boolean flag =false;
-		if(this.airplains.size()!=0) {
+		if(this.getAirplains().size()!=0) {
 			flag = true;
 		}
-		if(this.helicopters.size()!=0) {
+		if(this.getHelicopters().size()!=0) {
 			flag = true;
 		}
 		return flag;
@@ -74,57 +75,156 @@ public class AerialArena {
 	 * 
 	 */
 	public void playTurn() {
-		if(!airplains.isEmpty()) {
-			for(Airplane x:airplains) {
-				if(!(x.getFinish().getX()-x.move(FRICTION).getX()>0)) {
+		if(!getAirplains().isEmpty()) {
+			for(Airplane x:getAirplains()) {
+				if(!(x.getFinish().getX()-x.move(getFRICTION()).getX()>0)) {
 					x.setPlace(this.crossFinishLine(x));
-					this.airplains.remove(x);
+					this.getAirplains().remove(x);
 					break;
 				}
 			}
 		}
-		if(!helicopters.isEmpty()) {
-			for(Helicopter x:helicopters) {
-				if(!(x.getFinish().getX()-x.move(FRICTION).getX()>0)) {
+		if(!getHelicopters().isEmpty()) {
+			for(Helicopter x:getHelicopters()) {
+				if(!(x.getFinish().getX()-x.move(getFRICTION()).getX()>0)) {
 					x.setPlace(this.crossFinishLine(x));
-					this.helicopters.remove(x);
+					this.getHelicopters().remove(x);
 					break;
 				}
 			}
 		}
 	}
 	/**
-	 * @param crossFinishLine ,adds the finish racers to the finishd array
+	 * @param crossFinishLine ,adds the finish racers to the finished array
 	 * @return returns the place of the racer
 	 */
 	public int crossFinishLine(Airplane airplane) {
 		if(airplane instanceof Airplane) {
-			this.finishd.add(airplane);
-			return this.finishd.indexOf(airplane);
+			this.getFinishd().add(airplane);
+			return this.getFinishd().indexOf(airplane);
 		}
 		return -1;
 	}
 	/**
-	 * @param crossFinishLine ,adds the finish racers to the finishd array
+	 * @param crossFinishLine ,adds the finish racers to the finished array
 	 * 
 	 */
 	public int crossFinishLine(Helicopter helicopter) {
 		if(helicopter instanceof Helicopter) {
-			this.finishd.add(helicopter);
-			return this.finishd.indexOf(helicopter);
+			this.getFinishd().add(helicopter);
+			return this.getFinishd().indexOf(helicopter);
 		}
 		return -1;
 	}
 	/**
-	 * @param printFinish ,prints the finishd from first to the last
+	 * @param printFinish ,prints the finished from first to the last
 	 * 
 	 */
 	public void printFinish() {
 		System.out.println("Aerial Race ended!");
-		for(Object x:finishd) {
+		for(Object x:getFinishd()) {
 			System.out.println(x.toString());
 
 		}
 	}
+
+	/**
+	 * @return the start
+	 */
+	public Point getStart() {
+		return start;
+	}
+
+	/**
+	 * @param start the start to set
+	 */
+	public void setStart(Point start) {
+		this.start = start;
+	}
+
+	/**
+	 * @return the finish
+	 */
+	public Point getFinish() {
+		return finish;
+	}
+
+	/**
+	 * @param finish the finish to set
+	 */
+	public void setFinish(Point finish) {
+		this.finish = finish;
+	}
+
+	/**
+	 * @return the fRICTION
+	 */
+	public double getFRICTION() {
+		return FRICTION;
+	}
+
+	/**
+	 * @param fRICTION the fRICTION to set
+	 */
+	public void setFRICTION(double fRICTION) {
+		FRICTION = fRICTION;
+	}
+
+	/**
+	 * @return the mAX_RACERS
+	 */
+	public int getMAX_RACERS() {
+		return MAX_RACERS;
+	}
+
+	/**
+	 * @param mAX_RACERS the mAX_RACERS to set
+	 */
+	public void setMAX_RACERS(int mAX_RACERS) {
+		MAX_RACERS = mAX_RACERS;
+	}
+
+	/**
+	 * @return the airplains
+	 */
+	public ArrayList<Airplane> getAirplains() {
+		return airplains;
+	}
+
+	/**
+	 * @param airplains the airplains to set
+	 */
+	public void setAirplains(ArrayList<Airplane> airplains) {
+		this.airplains = airplains;
+	}
+
+	/**
+	 * @return the helicopters
+	 */
+	public ArrayList<Helicopter> getHelicopters() {
+		return helicopters;
+	}
+
+	/**
+	 * @param helicopters the helicopters to set
+	 */
+	public void setHelicopters(ArrayList<Helicopter> helicopters) {
+		this.helicopters = helicopters;
+	}
+
+	/**
+	 * @return the finishd
+	 */
+	public ArrayList<Object> getFinishd() {
+		return finishd;
+	}
+
+	/**
+	 * @param finishd the finishd to set
+	 */
+	public void setFinishd(ArrayList<Object> finishd) {
+		this.finishd = finishd;
+	}
+
 }
 
