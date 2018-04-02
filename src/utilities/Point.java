@@ -1,9 +1,18 @@
 package utilities;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alexs vizman 314342064
+ *
+ */
 public class Point {
 
 	private double x;
 	private double y;
+	private double MIN_X = 0;
+	private double MAX_X = 10000000;
+	private double MIN_Y = 0;
+	private double MAX_Y = 800;
+	
 	/**
 	 * class constructor, sets values to x and y
 	 * @param i
@@ -42,7 +51,7 @@ public class Point {
 	 * @return 
 	 */
 	public boolean setX(double x) {
-		if(x>0) {
+		if(x>this.getMIN_X() && x<this.getMAX_X()) {
 			this.x = x;
 			return true;
 		}
@@ -60,11 +69,59 @@ public class Point {
 	 * @param y, sets new value to y
 	 */
 	public boolean setY(double y) {
-		if(y>0) {
+		if(y>this.getMIN_Y() && y<this.getMAX_Y()) {
 			this.y = y;
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * @return the mAX_X
+	 */
+	public double getMAX_X() {
+		return MAX_X;
+	}
+	/**
+	 * @param mAX_X the mAX_X to set
+	 */
+	public void setMAX_X(double mAX_X) {
+		MAX_X = mAX_X;
+	}
+	/**
+	 * @return the mIN_X
+	 */
+	public double getMIN_X() {
+		return MIN_X;
+	}
+	/**
+	 * @param mIN_X the mIN_X to set
+	 */
+	public void setMIN_X(double mIN_X) {
+		MIN_X = mIN_X;
+	}
+	/**
+	 * @return the mIN_Y
+	 */
+	public double getMIN_Y() {
+		return MIN_Y;
+	}
+	/**
+	 * @param mIN_Y the mIN_Y to set
+	 */
+	public void setMIN_Y(double mIN_Y) {
+		MIN_Y = mIN_Y;
+	}
+	/**
+	 * @return the mAX_Y
+	 */
+	public double getMAX_Y() {
+		return MAX_Y;
+	}
+	/**
+	 * @param mAX_Y the mAX_Y to set
+	 */
+	public void setMAX_Y(double mAX_Y) {
+		MAX_Y = mAX_Y;
 	}
 
 

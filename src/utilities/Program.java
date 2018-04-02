@@ -9,7 +9,7 @@ import game.racers.*;
 
 /**
  * @author shmuel moha 204568323
- * @author alexs vizman
+ * @author alexs vizman 314342064
  *
  */
 public class Program {

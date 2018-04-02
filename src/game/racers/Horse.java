@@ -2,7 +2,11 @@ package game.racers;
 
 import game.arenas.LandArena;
 import utilities.Point;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alexs vizman 314342064
+ *
+ */
 public class Horse {
 
 	private String name;

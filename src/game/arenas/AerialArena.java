@@ -3,7 +3,11 @@ import java.util.ArrayList;
 import game.racers.Airplane;
 import game.racers.Helicopter;
 import utilities.Point;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alexs vizman 314342064
+ *
+ */
 public class AerialArena {
 	private Point start;
 	private Point finish;

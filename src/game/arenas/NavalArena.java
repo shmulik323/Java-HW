@@ -3,7 +3,11 @@ import java.util.ArrayList;
 import game.racers.RowBoat;
 import game.racers.SpeedBoat;
 import utilities.Point;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alexs vizman 314342064
+ *
+ */
 public class NavalArena {
 	Point start;
 	Point finish;

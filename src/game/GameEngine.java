@@ -1,6 +1,5 @@
 package game;
 
-
 import game.arenas.AerialArena;
 import game.arenas.LandArena;
 import game.arenas.NavalArena;
@@ -12,6 +11,11 @@ import game.racers.RowBoat;
 import game.racers.SpeedBoat;
 import utilities.ArenaType;
 
+/**
+ * @author shmuel moha 204568323
+ * @author alexs vizman 314342064
+ *
+ */
 public class GameEngine {
 
 	private static GameEngine instance = null;
