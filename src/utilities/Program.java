@@ -22,7 +22,7 @@ public class Program {
 
 		Point start = new Point(-150,-5);
 		System.out.println("start = " + start);
-		Point finish= new Point(15000,0);
+		Point finish= new Point(150000,0);
 		
 		AerialArena air = new AerialArena(start, finish);
 		NavalArena sea = new NavalArena(start, finish);
