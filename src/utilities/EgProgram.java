@@ -1,5 +1,7 @@
 package utilities;
 
+import java.lang.reflect.InvocationTargetException;
+
 import factory.RaceBuilder;
 import game.arenas.Arena;
 import game.arenas.exceptions.RacerLimitException;
@@ -17,13 +19,29 @@ public class EgProgram {
 		RaceBuilder rb = RaceBuilder.getInstance();
 		Fate.setSeed(477734503);
 
-		arena = rb.buildArena("game.arenas.air.AerialArena", 1500, 4);
-		racers[0] = rb.buildRacer("game.racers.air.Airplane", "Bob", 220, 10, Color.BLUE);
-		racers[1] = rb.buildRacer("game.racers.air.Airplane", "John", 175, 20, Color.BLUE);
-		racers[2] = rb.buildRacer("game.racers.air.Airplane", "Frank", 180, 15, Color.BLUE);
-		racers[3] = rb.buildRacer("game.racers.air.Airplane", "Matt", 230, 8, Color.BLUE);
-		racers[4] = rb.buildRacer("game.racers.Car", "car", 15, 1, Color.GREEN);
-		racers[5] = rb.buildRacer("game.racers.air.Airplane", "Alby", 200, 8, Color.BLUE);
+
+			arena = rb.buildArena("game.arenas.land.LandArena", 1500, 4);
+			racers[0] = rb.buildRacer("game.racers.land.Horse", "Bob", 220, 10, Color.BLUE);
+			racers[1] = rb.buildRacer("game.racers.land.Bicycle", "John", 175, 20, Color.BLUE);
+			racers[2] = rb.buildRacer("game.racers.land.Car", "Frank", 180, 15, Color.BLUE);
+			racers[3] = rb.buildRacer("game.racers.land.Car", "Matt", 230, 8, Color.BLUE);
+			racers[4] = rb.buildRacer("game.racers.land.Car", "car", 15, 1, Color.GREEN);
+			racers[5] = rb.buildRacer("game.racers.air.Airplane", "Alby", 200, 8, Color.BLUE);
+		
+	
+
+		introduceRacers(arena, racers);
+		arena.initRace();
+		System.out.println("Strat Race!");
+		while (arena.hasActiveRacers()) {
+			arena.playTurn();
+		}
+		System.out.println("Race Compleated!");
+		arena.showResults();
+
+	}
+
+	private static void introduceRacers(Arena arena, Racer[] racers) {
 		for (Racer r : racers) {
 
 			try {
@@ -37,14 +55,6 @@ public class EgProgram {
 			}
 
 		}
-		arena.initRace();
-		System.out.println("Strat Race!");
-		while (arena.hasActiveRacers()) {
-			arena.playTurn();
-		}
-		System.out.println("Race Compleated!");
-		arena.showResults();
-
 	}
 }
 

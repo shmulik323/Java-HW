@@ -2,6 +2,11 @@ package game.arenas.exceptions;
 
 public class RacerLimitException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public RacerLimitException() {
 		// TODO Auto-generated constructor stub
 	}

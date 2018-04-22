@@ -3,6 +3,8 @@ package game.racers;
 import game.arenas.Arena;
 import utilities.Point;
 import utilities.EnumContainer.Color;
+import utilities.Fate;
+import utilities.Mishap;
 public abstract class Racer {
 	private Arena arena;
 	private String name;
@@ -13,34 +15,44 @@ public abstract class Racer {
 	private double currentSpeed;
 	private double failurePropability;
 	private Color color;
+	private static int SerialNumber=1;
+	private Mishap mishap ;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 	}
 	public Racer(String name, double maxSpeed, double acceleration, Color color) {
-		this.name=name;
-		this.maxSpeed=maxSpeed;
-		this.acceleration=acceleration;
-		this.color=color;
-	}
-	public void introduce() {
-
-		
+		this.setName(name);
+		this.setMaxSpeed(maxSpeed);
+		this.setAcceleration(acceleration);
+		this.setColor(color);
 	}
 	public void initRace(Arena arena, Point start, Point finish) {
-		this.arena=arena;
-		this.currentLocation=start;
-		this.finish=finish;
+		this.setArena(arena);
+		this.setCurrentLocation(start);
+		this.setFinish(finish);
 	}
 	public Point move(double friction) {
-		if(this.currentSpeed<this.maxSpeed) {
+		if(this.getMishap()==null) {
+			this.setMishap(Fate.generateMishap());
+			System.out.println(this.getName()+" Has a new mishap! "+this.getMishap().toString());
+		}
+		if(this.getMishap().getTurnsToFix()!=0) {
+			currentSpeed+= this.getAcceleration()*friction*this.getMishap().getReductionFactor();
+		}
+		else if(this.currentSpeed<this.maxSpeed) {
 			currentSpeed+=acceleration*friction;
 		}
-		currentLocation.setX(currentLocation.getX()+currentSpeed);
+			this.getCurrentLocation().setX(currentLocation.getX()+currentSpeed);
 		
-	// has a chance for failure ( see section 4.2 )
-		return currentLocation;
-		}
+		// has a chance for failure ( see section 4.2 )
+		return this.getCurrentLocation();
+	}
+
+	public abstract String describeSpecific();
+	public abstract String describeRacer();
+	public abstract void introduce();
+	public abstract String className();
 	/**
 	 * @return the arena
 	 */
@@ -165,6 +177,30 @@ public abstract class Racer {
 	 */
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	/**
+	 * @return the serialNumber
+	 */
+	public static int getSerialNumber() {
+		return SerialNumber;
+	}
+	/**
+	 * @param serialNumber the serialNumber to set
+	 */
+	public static void setSerialNumber(int serialNumber) {
+		SerialNumber = serialNumber;
+	}
+	/**
+	 * @return the mishap
+	 */
+	public Mishap getMishap() {
+		return mishap;
+	}
+	/**
+	 * @param mishap the mishap to set
+	 */
+	public void setMishap(Mishap mishap) {
+		this.mishap = mishap;
 	}
 
 }

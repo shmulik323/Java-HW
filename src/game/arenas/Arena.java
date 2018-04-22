@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
-import game.racers.Car;
 import game.racers.Racer;
+import game.racers.air.AerialRacer;
+import game.racers.air.Airplane;
 import utilities.Point;
 
 public abstract class Arena {
@@ -15,7 +16,6 @@ public abstract class Arena {
 	private int MAX_RACERS ;
 	private ArrayList<Object> activeRacers=new ArrayList<Object>();
 	private ArrayList<Object> completedRacers = new ArrayList<Object>();
-	private ArrayList<Object> finished= new ArrayList<Object>();
 	
 	
 	public Arena(double length2, int maxRacers, double friction){
@@ -24,13 +24,11 @@ public abstract class Arena {
 		this.setFRICTION(friction);	
 	}
 	
-	public void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException {
-
-	}
+	public abstract void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException ;
 
 	public void initRace() {
 		for (Object racer : this.activeRacers)  {
-			((Racer) racer).initRace(((Racer) racer).getArena(), new Point(0,activeRacers.indexOf(racer)*MIN_Y_GAP),  new Point(length,activeRacers.indexOf(racer)*MIN_Y_GAP));
+			((Racer) racer).initRace(((Racer) racer).getArena(), new Point(0,activeRacers.size()*MIN_Y_GAP),  new Point(length,activeRacers.size()*MIN_Y_GAP));
 			}
 		
 	}
@@ -43,23 +41,33 @@ public abstract class Arena {
 	}
 
 	public void playTurn() {
-		
-		
+		if(!(this.getActiveRacers().isEmpty())) {
+			for(Object r:this.getActiveRacers()) {
+				if(((Racer)r).getCurrentLocation().getX()<this.getLength()) {
+					((Racer) r).move(getFRICTION());
+				}
+				else {
+					this.crossFinishLine((Racer) r);
+					this.getActiveRacers().remove(r);
+					return;
+				}
+			}
+		}
 	}
 	public int crossFinishLine(Racer racer) {
-		this.finished.add(racer);
-		return this.finished.size();
+		this.completedRacers.add(racer);
+		return this.completedRacers.size();
 	}
 
 	public void showResults() {
-		for(Object racer:this.finished) {
-			((Racer) racer).toString();
+		for(Object racer:this.completedRacers) {
+			System.out.println("#"+this.completedRacers.indexOf(racer)+" -> "+((Racer) racer).describeRacer()+((Racer) racer).describeSpecific());
 		}
 		
 	}
 
 	/**
-	 * @return the fRICTION
+	 * @return the FRICTION
 	 */
 	public static double getFRICTION() {
 		return FRICTION;
@@ -68,7 +76,7 @@ public abstract class Arena {
 	/**
 	 * @return the length
 	 */
-	public static double getLength() {
+	public double getLength() {
 		return length;
 	}
 
@@ -76,7 +84,7 @@ public abstract class Arena {
 	 * @param length2 the length to set
 	 */
 	public void setLength(double length2) {
-		this.length = length2;
+		Arena.length = length2;
 	}
 
 	/**

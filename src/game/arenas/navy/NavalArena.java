@@ -1,13 +1,14 @@
-package game.arenas;
+package game.arenas.navy;
 
-import java.util.ArrayList;
-
-import game.racers.RowBoat;
-import game.racers.SpeedBoat;
+import game.arenas.Arena;
+import game.arenas.exceptions.RacerLimitException;
+import game.arenas.exceptions.RacerTypeException;
+import game.racers.Racer;
+import game.racers.air.AerialRacer;
+import game.racers.navy.NavalRacer;
 import utilities.EnumContainer.Body;
 import utilities.EnumContainer.Surface;
 import utilities.EnumContainer.Water;
-import utilities.Point;
 
 public class NavalArena extends Arena{
 
@@ -25,6 +26,21 @@ public class NavalArena extends Arena{
 		super(length,MAX_RACERS,FRICTION);
 	}
 	
+	public void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException {
+		String message;
+		if(!(newRacer instanceof NavalRacer)) {
+			 message = "Invalid Racer of type"+" "+'"'+newRacer.className()+'"'+"for "+this.getClass().getSimpleName();
+			throw new RacerTypeException(message);
+		}
+		if(this.getActiveRacers().size()==this.getMAX_RACERS()) {
+			message = "Arena is full!"+"("+this.getActiveRacers().size()+" active racers exist)."+"racer #"+newRacer.getSerialNumber()+" was not added";
+			throw new RacerLimitException(message);
+		}
+
+		else {
+			this.getActiveRacers().add(newRacer);
+		}
+	}
 	/**
 	 * @return the water
 	 */

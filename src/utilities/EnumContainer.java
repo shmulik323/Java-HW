@@ -40,4 +40,17 @@ public class EnumContainer {
 	public static enum Coverage{
 		SAND,GRASS,MUD
 	}
+	public static enum Engine{
+		FOURSTROKE,VTYPE,STRAIGHT,BOXER,ROTARY
+	}
+	public static enum Breed{
+		THOROUGHBRED,STANDARDBRED,MORGAN,FRIESIAN
+	}
+	public static enum Type{
+		MOUNTAIN,HYBRID,CRUISER,ROAD,SKULLING,SWEEP
+	}
+	public static enum Team{
+		SINGLE,DOUBLE,QUAD,EIGHT
+		
+	}
 }
