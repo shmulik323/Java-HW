@@ -18,22 +18,22 @@ public class Car extends Racer implements LandRacer {
 	public Car(String name, double maxSpeed, double acceleration, Color color,int numOfWheels) {
 		super(name, maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
-		// TODO Auto-generated constructor stub
+		SerialNumber=Racer.getSerialNumber();
+		Racer.setSerialNumber(Racer.getSerialNumber()+1);
+		
 	}
 	public Car(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
-		SerialNumber=this.getSerialNumber();
-		if(name==null) {
-			this.setName("Car"+this.getSerialNumber());
-		}
-//		this.setSerialNumber(this.getSerialNumber()+1);
+		SerialNumber=Racer.getSerialNumber();
+		Racer.setSerialNumber(Racer.getSerialNumber()+1);
+
 	}
 	public Car() {
-		super("Car", maxSpeed, acceleration, color);
+		super("Car #"+getSerialNumber(), maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
-		SerialNumber=this.getSerialNumber();
-		this.setSerialNumber(this.getSerialNumber()+1);
+		SerialNumber=Racer.getSerialNumber();
+		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 	}
 	
 
@@ -52,8 +52,8 @@ public class Car extends Racer implements LandRacer {
 	@Override
 	public String describeRacer() {
 		
-		return "name: "+this.getName()+","+" SerialNumber: "+this.getSerialNumber()+" maxSpeed: "+this.maxSpeed+","+
-				" acceleration: "+this.acceleration+ ","+this.describeSpecific();
+		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
+				" acceleration: "+this.getAcceleration()+ ","+"Color: "+this.getColor()+" ";
 	}
 
 	/* (non-Javadoc)

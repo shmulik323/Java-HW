@@ -5,6 +5,7 @@ import utilities.Point;
 import utilities.EnumContainer.Color;
 import utilities.Fate;
 import utilities.Mishap;
+
 public abstract class Racer {
 	private Arena arena;
 	private String name;
@@ -18,7 +19,7 @@ public abstract class Racer {
 	private static int SerialNumber=1;
 	private Mishap mishap ;
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 
 	}
 	public Racer(String name, double maxSpeed, double acceleration, Color color) {
@@ -33,25 +34,35 @@ public abstract class Racer {
 		this.setFinish(finish);
 	}
 	public Point move(double friction) {
-		if(this.getMishap()==null) {
-			this.setMishap(Fate.generateMishap());
-			System.out.println(this.getName()+" Has a new mishap! "+this.getMishap().toString());
+		if(this.getMishap()==null || this.getMishap().getTurnsToFix()==0) {
+			if(Fate.breakDown()) {
+				this.setMishap(Fate.generateMishap());
+				System.out.println(this.getName()+" Has a new mishap! "+this.getMishap().toString());
+			}
 		}
-		if(this.getMishap().getTurnsToFix()!=0) {
-			currentSpeed+= this.getAcceleration()*friction*this.getMishap().getReductionFactor();
+		if(this.getMishap()!=null) {
+			if(this.getMishap().getTurnsToFix()!=0) {
+				currentSpeed+= this.getAcceleration()*friction*this.getMishap().getReductionFactor();
+				if(this.getMishap().isFixable()) {
+					this.getMishap().setTurnsToFix(this.getMishap().getTurnsToFix()-1);
+				}
+			}
 		}
 		else if(this.currentSpeed<this.maxSpeed) {
 			currentSpeed+=acceleration*friction;
 		}
-			this.getCurrentLocation().setX(currentLocation.getX()+currentSpeed);
-		
+		this.getCurrentLocation().setX(currentLocation.getX()+currentSpeed);
+
 		// has a chance for failure ( see section 4.2 )
 		return this.getCurrentLocation();
 	}
 
 	public abstract String describeSpecific();
 	public abstract String describeRacer();
-	public abstract void introduce();
+	public void introduce() {
+		System.out.println("["+this.className()+"]"+this.describeRacer()+describeSpecific());
+
+	}
 	public abstract String className();
 	/**
 	 * @return the arena

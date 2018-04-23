@@ -14,8 +14,8 @@ public abstract class Arena {
 	private final static int MIN_Y_GAP=10;
 	private static double FRICTION;
 	private int MAX_RACERS ;
-	private ArrayList<Object> activeRacers=new ArrayList<Object>();
-	private ArrayList<Object> completedRacers = new ArrayList<Object>();
+	private ArrayList<Racer> activeRacers=new ArrayList<Racer>();
+	private ArrayList<Racer> completedRacers = new ArrayList<Racer>();
 	
 	
 	public Arena(double length2, int maxRacers, double friction){
@@ -60,8 +60,8 @@ public abstract class Arena {
 	}
 
 	public void showResults() {
-		for(Object racer:this.completedRacers) {
-			System.out.println("#"+this.completedRacers.indexOf(racer)+" -> "+((Racer) racer).describeRacer()+((Racer) racer).describeSpecific());
+		for(Racer racer:this.completedRacers) {
+			System.out.println("#"+this.completedRacers.indexOf(racer)+" -> "+racer.describeRacer()+ racer.describeSpecific());
 		}
 		
 	}
@@ -98,28 +98,28 @@ public abstract class Arena {
 	/**
 	 * @return the activeRacers
 	 */
-	public ArrayList<Object> getActiveRacers() {
+	public ArrayList<Racer> getActiveRacers() {
 		return activeRacers;
 	}
 
 	/**
 	 * @param activeRacers the activeRacers to set
 	 */
-	public void setActiveRacers(ArrayList<Object> activeRacers) {
+	public void setActiveRacers(ArrayList<Racer> activeRacers) {
 		this.activeRacers = activeRacers;
 	}
 
 	/**
 	 * @return the completedRacers
 	 */
-	public ArrayList<Object> getCompletedRacers() {
+	public ArrayList<Racer> getCompletedRacers() {
 		return completedRacers;
 	}
 
 	/**
 	 * @param completedRacers the completedRacers to set
 	 */
-	public void setCompletedRacers(ArrayList<Object> completedRacers) {
+	public void setCompletedRacers(ArrayList<Racer> completedRacers) {
 		this.completedRacers = completedRacers;
 	}
 

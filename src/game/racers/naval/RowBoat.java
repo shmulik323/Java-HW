@@ -1,14 +1,16 @@
-package game.racers.navy;
+package game.racers.naval;
 
 import game.racers.Racer;
+import game.racers.Wheeled;
 import utilities.EnumContainer.Breed;
 import utilities.EnumContainer.Color;
 import utilities.EnumContainer.Team;
 import utilities.EnumContainer.Type;
 
 public class RowBoat extends Racer {
+	private int SerialNumber;
 	private String name;
-	private static double  maxSpeed =270;
+	private static double  maxSpeed =75;
 	private static double acceleration=10;
 	private static Color color =Color.RED;
 	private Team team=Team.DOUBLE;
@@ -16,10 +18,14 @@ public class RowBoat extends Racer {
 	
 	public RowBoat(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
-		// TODO Auto-generated constructor stub
+		SerialNumber=Racer.getSerialNumber();
+		Racer.setSerialNumber(Racer.getSerialNumber()+1);
+		
 	}
 	public RowBoat() {
-		super("", maxSpeed, acceleration, color);
+		super("RowBoat #"+Racer.getSerialNumber(), maxSpeed, acceleration, color);
+		SerialNumber=Racer.getSerialNumber();
+		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 	}
 
 	/* (non-Javadoc)
@@ -37,25 +43,17 @@ public class RowBoat extends Racer {
 	@Override
 	public String describeRacer() {
 		
-		return "name:"+this.name+","+"SerialNumber:"+this.getSerialNumber()+"maxSpeed:"+this.maxSpeed+","+
-				"acceleration:"+this.acceleration+ ","+this.describeSpecific();
+		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
+				" acceleration: "+this.getAcceleration()+ ","+"Color: "+this.getColor()+" ";
 	}
 
-	/* (non-Javadoc)
-	 * @see game.racers.Racer#introduce()
-	 */
-	@Override
-	public void introduce() {
-		System.out.println(this.className()+this.describeRacer());
-
-	}
 
 	/* (non-Javadoc)
 	 * @see game.racers.Racer#className()
 	 */
 	@Override
 	public String className() {
-		return "["+"RowBoat"+"]";
+		return "RowBoat";
 	}
 
 	/**

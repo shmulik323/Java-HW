@@ -1,7 +1,7 @@
 /**
  * 
  */
-package game.racers.navy;
+package game.racers.naval;
 
 /**
  * @author shmul

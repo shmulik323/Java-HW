@@ -13,6 +13,7 @@ import utilities.EnumContainer.Color;
  */
 public class Bicycle extends Racer implements LandRacer {
 
+	private int SerialNumber;
 	private static int numOfWheels=2;
 	private static double  maxSpeed =270;
 	private static double acceleration=10;
@@ -21,17 +22,23 @@ public class Bicycle extends Racer implements LandRacer {
 	
 	public Bicycle(String name, double maxSpeed, double acceleration, Color color,int numOfWheels) {
 		super(name, maxSpeed, acceleration, color);
-		wheeled=new Wheeled(numOfWheels);
+		this.wheeled=new Wheeled(numOfWheels);
+		SerialNumber=Racer.getSerialNumber();
+		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 		
 	}
 	public Bicycle(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
-		wheeled=new Wheeled(numOfWheels);
+		this.wheeled=new Wheeled(numOfWheels);
+		SerialNumber=Racer.getSerialNumber();
+		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 		
 	}
 	public Bicycle() {
-		super("", maxSpeed, acceleration, color);
+		super("Bicycle #"+getSerialNumber(), maxSpeed, acceleration, color);
 		wheeled=new Wheeled(numOfWheels);
+		SerialNumber=Racer.getSerialNumber();
+		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 	}
 
 
@@ -50,25 +57,15 @@ public class Bicycle extends Racer implements LandRacer {
 	@Override
 	public String describeRacer() {
 		
-		return "name:"+this.getName()+","+"SerialNumber:"+this.getSerialNumber()+"maxSpeed:"+this.maxSpeed+","+
-				"acceleration:"+this.acceleration+ ","+this.describeSpecific();
+		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
+				" acceleration: "+this.getAcceleration()+ ","+"Color: "+this.getColor()+" ";
 	}
-
-	/* (non-Javadoc)
-	 * @see game.racers.Racer#introduce()
-	 */
-	@Override
-	public void introduce() {
-		System.out.println(this.className()+this.describeRacer());
-
-	}
-
 	/* (non-Javadoc)
 	 * @see game.racers.Racer#className()
 	 */
 	@Override
 	public String className() {
-		return "["+"Bicycle"+"]";
+		return "Bicycle";
 	}
 
 

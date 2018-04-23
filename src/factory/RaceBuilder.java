@@ -7,14 +7,15 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * @author shmul
+ *
+ */
 public class RaceBuilder {
 	private static RaceBuilder instance=null;
-	Arena reflectArena;
-	Method method;
-	ClassLoader cl = ClassLoader.getSystemClassLoader();
-	Class<?> c;
-	Constructor<?> con;
-	 Racer newRacer;
+	ClassLoader classLoder = ClassLoader.getSystemClassLoader();
+	Class<?> reflectClass;
+	Constructor<?> reflectConstractor;
 	protected RaceBuilder() {
 		// Exists only to defeat instantiation
 	}
@@ -28,48 +29,27 @@ public class RaceBuilder {
 		}
 		return instance;
 	}
-	public Arena  buildArena(String arenaType, double length, int maxRacers) {
 	
-		 try {
-			 c = cl.loadClass(arenaType);
-			 con = c.getConstructor(double.class, int.class); 
-			 reflectArena =(Arena) con.newInstance(length,maxRacers);
-				return reflectArena;
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-			e.getStackTrace();
-		}
-		 return reflectArena;
+	public Arena  buildArena(String arenaType, double length, int maxRacers) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+		reflectClass = classLoder.loadClass(arenaType);
+		reflectConstractor = reflectClass.getConstructor(double.class, int.class); 
+		return(Arena) reflectConstractor.newInstance(length,maxRacers);
 	}
 	public Racer buildRacer(String racerType, String name, double maxSpeed, double
-			acceleration, utilities.EnumContainer.Color color){
+			acceleration, utilities.EnumContainer.Color color) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 
-	
-		try {
-				c = cl.loadClass(racerType);
-				 con = c.getConstructor(String.class, double.class, double.class, Color.class);
-				 this.newRacer=(Racer)con.newInstance(name,maxSpeed,acceleration,color);		 		 
-			return newRacer;
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-			return newRacer;
-		}
-		 
-		
+		reflectClass = classLoder.loadClass(racerType);
+		reflectConstractor = reflectClass.getConstructor(String.class, double.class, double.class, Color.class);
+		return (Racer)reflectConstractor.newInstance(name,maxSpeed,acceleration,color);
+
 	}
 	public Racer buildWheeledRacer(String racerType, String name, double maxSpeed, 
-			double acceleration, Color color, int numOfWheels) {
+			double acceleration, Color color, int numOfWheels) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		reflectClass = classLoder.loadClass(racerType);
+		reflectConstractor = reflectClass.getConstructor(String.class, double.class, double.class, Color.class,int.class);
+		return (Racer)reflectConstractor.newInstance(name,maxSpeed,acceleration,color,numOfWheels);
 
-		 try {
-				c = cl.loadClass(racerType);
-				 con = c.getConstructor(String.class, double.class, double.class, Color.class,int.class);
-			return (Racer)con.newInstance(name,maxSpeed,acceleration,color,numOfWheels);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-			
-		
-		}
-		return null;
 	}
-	
+
 }

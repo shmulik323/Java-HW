@@ -1,11 +1,11 @@
-package game.arenas.navy;
+package game.arenas.naval;
 
 import game.arenas.Arena;
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
 import game.racers.air.AerialRacer;
-import game.racers.navy.NavalRacer;
+import game.racers.naval.NavalRacer;
 import utilities.EnumContainer.Body;
 import utilities.EnumContainer.Surface;
 import utilities.EnumContainer.Water;
