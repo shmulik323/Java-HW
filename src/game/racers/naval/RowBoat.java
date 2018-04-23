@@ -6,7 +6,11 @@ import utilities.EnumContainer.Breed;
 import utilities.EnumContainer.Color;
 import utilities.EnumContainer.Team;
 import utilities.EnumContainer.Type;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alexs waizman 314342064
+ *
+ */
 public class RowBoat extends Racer {
 	private int SerialNumber;
 	private String name;

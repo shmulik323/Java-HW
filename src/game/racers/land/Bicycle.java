@@ -3,12 +3,16 @@
  */
 package game.racers.land;
 
+import java.lang.reflect.Constructor;
+
 import game.racers.Racer;
 import game.racers.Wheeled;
 import utilities.EnumContainer.Color;
 
+
 /**
- * @author shmul
+ * @author shmuel moha 204568323
+ * @author alexs waizman 314342064
  *
  */
 public class Bicycle extends Racer implements LandRacer {
@@ -19,7 +23,15 @@ public class Bicycle extends Racer implements LandRacer {
 	private static double acceleration=10;
 	private static Color color =Color.GREEN;
 	private Wheeled wheeled;
-	
+	/**
+	 * 
+	 * @param name
+	 * @param maxSpeed
+	 * @param acceleration
+	 * @param color
+	 * @param numOfWheels
+	 * {@link Constructor}
+	 */
 	public Bicycle(String name, double maxSpeed, double acceleration, Color color,int numOfWheels) {
 		super(name, maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
@@ -27,6 +39,14 @@ public class Bicycle extends Racer implements LandRacer {
 		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 		
 	}
+	/**
+	 * 
+	 * @param name
+	 * @param maxSpeed
+	 * @param acceleration
+	 * @param color
+	 * {@link Constructor}
+	 */
 	public Bicycle(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
@@ -34,6 +54,9 @@ public class Bicycle extends Racer implements LandRacer {
 		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 		
 	}
+	/**
+	  * {@link Constructor} Default
+	 */
 	public Bicycle() {
 		super("Bicycle #"+getSerialNumber(), maxSpeed, acceleration, color);
 		wheeled=new Wheeled(numOfWheels);
@@ -42,16 +65,16 @@ public class Bicycle extends Racer implements LandRacer {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see game.racers.Racer#describeSpecific()
-	 */
-	@Override
+/**
+ * describeSpecific
+ * @return The specific fildes string
+ */
 	public String describeSpecific() {
 		
 		return "NumOfWheels:"+ this.wheeled.getNumOfWheels();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see game.racers.Racer#describeRacer()
 	 */
 	@Override
@@ -60,7 +83,7 @@ public class Bicycle extends Racer implements LandRacer {
 		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
 				" acceleration: "+this.getAcceleration()+ ","+"Color: "+this.getColor()+" ";
 	}
-	/* (non-Javadoc)
+	/**
 	 * @see game.racers.Racer#className()
 	 */
 	@Override

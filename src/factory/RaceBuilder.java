@@ -8,14 +8,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author shmul
+ * @author shmuel moha 204568323
+ * @author alexs waizman 314342064
  *
  */
 public class RaceBuilder {
-	private static RaceBuilder instance=null;
-	ClassLoader classLoder = ClassLoader.getSystemClassLoader();
+	private static RaceBuilder instance=null;//Singleton
+	ClassLoader classLoder = ClassLoader.getSystemClassLoader();//getting the class loader
 	Class<?> reflectClass;
 	Constructor<?> reflectConstractor;
+	
+	
 	protected RaceBuilder() {
 		// Exists only to defeat instantiation
 	}
@@ -32,9 +35,9 @@ public class RaceBuilder {
 	
 	public Arena  buildArena(String arenaType, double length, int maxRacers) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-		reflectClass = classLoder.loadClass(arenaType);
-		reflectConstractor = reflectClass.getConstructor(double.class, int.class); 
-		return(Arena) reflectConstractor.newInstance(length,maxRacers);
+		reflectClass = classLoder.loadClass(arenaType);//loading the class from path
+		reflectConstractor = reflectClass.getConstructor(double.class, int.class);//loading the contractor 
+		return(Arena) reflectConstractor.newInstance(length,maxRacers);//returning a new instance of the provided class
 	}
 	public Racer buildRacer(String racerType, String name, double maxSpeed, double
 			acceleration, utilities.EnumContainer.Color color) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{

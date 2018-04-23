@@ -4,7 +4,11 @@ import game.racers.Racer;
 import utilities.EnumContainer.Color;
 import utilities.EnumContainer.Team;
 import utilities.EnumContainer.Type;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alexs waizman 314342064
+ *
+ */
 public class SpeedBoat extends Racer {
 
 	private int SerialNumber;

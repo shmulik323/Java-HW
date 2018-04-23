@@ -2,7 +2,11 @@ package game.racers.air;
 
 import game.racers.Racer;
 import utilities.EnumContainer.Color;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alexs waizman 314342064
+ *
+ */
 public class Helicopter extends Racer implements AerialRacer{
 	private  int SerialNumber;
 	private static double  maxSpeed =400;
