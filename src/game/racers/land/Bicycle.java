@@ -39,21 +39,7 @@ public class Bicycle extends Racer implements LandRacer {
 		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 		
 	}
-	/**
-	 * 
-	 * @param name
-	 * @param maxSpeed
-	 * @param acceleration
-	 * @param color
-	 * {@link Constructor}
-	 */
-	public Bicycle(String name, double maxSpeed, double acceleration, Color color) {
-		super(name, maxSpeed, acceleration, color);
-		this.wheeled=new Wheeled(numOfWheels);
-		SerialNumber=Racer.getSerialNumber();
-		Racer.setSerialNumber(Racer.getSerialNumber()+1);
-		
-	}
+
 	/**
 	  * {@link Constructor} Default
 	 */

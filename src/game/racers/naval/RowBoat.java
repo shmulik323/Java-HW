@@ -11,7 +11,7 @@ import utilities.EnumContainer.Type;
  * @author alexs waizman 314342064
  *
  */
-public class RowBoat extends Racer {
+public class RowBoat extends Racer implements NavalRacer{
 	private int SerialNumber;
 	private String name;
 	private static double  maxSpeed =75;

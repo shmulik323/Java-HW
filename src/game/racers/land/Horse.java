@@ -10,7 +10,7 @@ public class Horse extends Racer implements LandRacer{
 	private static double  maxSpeed =50;
 	private static double acceleration=3;
 	private  Breed breed =Breed.FRIESIAN ;
-	private static  Color color=null;
+	private static  Color color=Color.BLACK;
 	
 	public Horse(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);

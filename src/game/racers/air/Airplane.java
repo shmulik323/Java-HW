@@ -21,11 +21,7 @@ public class Airplane extends Racer implements AerialRacer{
 		SerialNumber=Racer.getSerialNumber();
 		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 	}
-	public Airplane(String name, double maxSpeed, double acceleration, Color color) {
-		super(name, maxSpeed, acceleration, color);	
-		SerialNumber=Racer.getSerialNumber();
-		Racer.setSerialNumber(Racer.getSerialNumber()+1);
-	}
+
 	public Airplane() {
 		super("Airplane #"+getSerialNumber(), maxSpeed, acceleration, color);
 		SerialNumber=Racer.getSerialNumber();
