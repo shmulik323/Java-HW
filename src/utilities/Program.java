@@ -24,7 +24,8 @@ import game.racers.naval.SpeedBoat;
 import utilities.EnumContainer.Color;
 
 /**
- * @author Bar Ohayon
+ * @author shmuel moha 204568323
+ * @author alexs weizman 314342064
  *
  */
 public class Program {

@@ -5,7 +5,7 @@ import game.racers.Wheeled;
 import utilities.EnumContainer.Color;
 /**
  * @author shmuel moha 204568323
- * @author alexs waizman 314342064
+ * @author alexs weizman 314342064
  *
  */
 public class Airplane extends Racer implements AerialRacer{
