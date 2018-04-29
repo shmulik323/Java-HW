@@ -22,7 +22,7 @@ public class RowBoat extends Racer implements NavalRacer{
 		
 	}
 	public RowBoat() {
-		super("RowBoat #"+Integer.toString(Racer.SerialId+1), maxSpeed, acceleration, color);
+		super("RowBoat #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
 	}
 
 	/* (non-Javadoc)

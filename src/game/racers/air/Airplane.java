@@ -20,7 +20,7 @@ public class Airplane extends Racer implements AerialRacer{
 	}
 
 	public Airplane() {
-		super("Airplane #"+Integer.toString(Racer.SerialId+1), maxSpeed, acceleration, color);
+		super("Airplane #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
 	}
 	
 	/* (non-Javadoc)

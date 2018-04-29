@@ -58,7 +58,7 @@ public class Program {
 		try {
 			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "Bob", 220, 10, Color.BLUE, 3));
 			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "John", 175, 20, Color.BLUE, 3));
-			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "Frank", 180, 15, Color.GREEN, 3));
+			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "Frank", 180, 15, Color.BLUE, 3));
 			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Matt", 230, 8, Color.RED));
 			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "car", 15, 1, Color.GREEN, 3));
 			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Alby", 200, 8, Color.BLUE));
@@ -85,7 +85,7 @@ public class Program {
 			racers.add(builder.buildRacer("game.racers.land.Horse", "Frank", 180, 15, Color.BLUE));
 			racers.add(builder.buildRacer("game.racers.land.Horse", "Matt", 230, 8, Color.RED));
 			racers.add(builder.buildWheeledRacer("game.racers.land.Bicycle", "Timmy", 15, 1, Color.GREEN, 3));
-			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Alby", 200, 8, Color.RED));
+			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Alby", 200, 8, Color.BLUE));
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
@@ -151,15 +151,15 @@ public class Program {
 		System.out.println("Introduction: ");
 		for (Racer racer : arena.getActiveRacers())
 			racer.introduce();
-		System.out.println("Start Race!");
+		System.out.println("Strat Race!");
 		while (arena.hasActiveRacers()) {
 			arena.playTurn();
 		}
-		System.out.println("Race Completed!");
+		System.out.println("Race Compleated!");
 	}
 
 	private static void testDefaults() {
-		System.out.println("Testing default values and introduction.");
+		System.out.println("Testing default valus and introduction.");
 		(new Car()).introduce();
 		(new Horse()).introduce();
 		(new Bicycle()).introduce();

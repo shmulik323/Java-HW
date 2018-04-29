@@ -19,7 +19,7 @@ public class SpeedBoat extends Racer implements NavalRacer {
 	}
 
 	public SpeedBoat() {
-		super("SpeedBoat #"+Integer.toString(Racer.SerialId+1), maxSpeed, acceleration, color);
+		super("SpeedBoat #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
 	}
 
 	/* (non-Javadoc)

@@ -25,7 +25,7 @@ public class Car extends Racer implements LandRacer {
 	}
 
 	public Car() {
-		super("Car #"+Integer.toString(Racer.SerialId+1), maxSpeed, acceleration, color);
+		super("Car #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
 
 	}

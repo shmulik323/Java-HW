@@ -41,9 +41,9 @@ public abstract class Racer {
 	 * @param finish
 	 */
 	public void initRace(Arena arena, Point start, Point finish) {
-		this.setArena(arena);
-		this.setCurrentLocation(start);
-		this.setFinish(finish);
+		this.arena=arena;
+		this.currentLocation=start;
+		this.finish=finish;
 	}
 	/**
 	 * function that moves the racer
@@ -51,37 +51,37 @@ public abstract class Racer {
 	 * @return Point object, the new location
 	 */
 	public Point move(double friction) {
-		if(this.getMishap()==null || (this.getMishap().getTurnsToFix()==0 && this.getMishap().isFixable())) {
+		if(this.mishap==null || (this.mishap.getTurnsToFix()==0 && this.mishap.isFixable())) {
 			if(Fate.breakDown()) {
-				this.setMishap(Fate.generateMishap());
-				System.out.println(this.getName()+" Has a new mishap! "+this.getMishap().toString());
+				this.mishap=Fate.generateMishap();
+				System.out.println(this.getName()+" Has a new mishap! "+this.mishap.toString());
 			}
 		}
 		if(this.getMishap()!=null) {
 			if(this.getMishap().getTurnsToFix()!=0) {
-				currentSpeed+= this.getAcceleration()*friction*this.getMishap().getReductionFactor();
-				if(this.getMishap().isFixable()) {
-					this.getMishap().nextTurn();
+				currentSpeed+= this.getAcceleration()*friction*this.mishap.getReductionFactor();
+				if(this.mishap.isFixable()) {
+					this.mishap.nextTurn();
 				}
 			}
 		}
 		else if(this.currentSpeed<this.maxSpeed) {
 			currentSpeed+=acceleration*friction;
 		}
-		this.getCurrentLocation().setX(currentLocation.getX()+currentSpeed);
+		this.currentLocation.setX(this.currentLocation.getX()+this.currentSpeed);
 
-		return this.getCurrentLocation();
+		return this.currentLocation;
 	}
 
-	public abstract String describeSpecific();
 	public String describeRacer() {
 		
 		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
-				" acceleration: "+this.getAcceleration()+ ","+"Color: "+this.getColor()+" ";
+				" acceleration: "+this.acceleration+ ","+"Color: "+this.color+" ";
 	}
+	public abstract String describeSpecific();//abstract method 
 	
 	public void introduce() {
-		System.out.println("["+this.className()+"]"+this.describeRacer()+describeSpecific());
+		System.out.println("["+this.className()+"]"+this.describeRacer()+this.describeSpecific());
 
 	}
 	public String className() {
@@ -249,14 +249,14 @@ public abstract class Racer {
 	/**
 	 * @return the serialNumber
 	 */
-	public static int getSerialNumber() {
+	public static int getSerialId() {
 		return SerialId;
 	}
 	/**
 	 * @param serialNumber the serialNumber to set
 	 * @return true if the SerialNumber is valid and false if not
 	 */
-	public static boolean setSerialNumber(int serialNumber) {
+	public static boolean setSerialId(int serialNumber) {
 		if(serialNumber>=0) {
 			SerialId = serialNumber;
 			return true;

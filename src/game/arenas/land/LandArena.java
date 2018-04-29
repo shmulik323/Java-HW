@@ -40,7 +40,7 @@ public class LandArena extends Arena {
 			throw new RacerTypeException(message);
 		}
 		if(this.getActiveRacers().size()==this.getMAX_RACERS()) {
-			message = "Arena is full!"+"("+this.getActiveRacers().size()+" active racers exist)."+"racer #"+Racer.getSerialNumber()+" was not added";
+			message = "Arena is full!"+"("+this.getActiveRacers().size()+" active racers exist)."+"racer #"+Racer.getSerialId()+" was not added";
 			throw new RacerLimitException(message);
 		}
 

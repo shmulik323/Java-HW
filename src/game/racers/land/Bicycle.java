@@ -41,7 +41,7 @@ public class Bicycle extends Racer implements LandRacer {
 	  * {@link Constructor} Default
 	 */
 	public Bicycle() {
-		super("Bicycle #"+Integer.toString(Racer.SerialId+1), maxSpeed, acceleration, color);
+		super("Bicycle #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
 		wheeled=new Wheeled(numOfWheels);
 
 	}

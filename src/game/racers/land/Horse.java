@@ -20,7 +20,7 @@ public class Horse extends Racer implements LandRacer{
 		
 	}
 	public Horse() {
-		super("Horse #"+Integer.toString(Racer.SerialId+1), maxSpeed, acceleration, color);
+		super("Horse #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
 
 	}
 	

@@ -13,7 +13,7 @@ public class Helicopter extends Racer implements AerialRacer{
 	private static Color color =Color.BLUE;
 	
 	public Helicopter() {
-		super("Helicopter #"+Integer.toString(Racer.SerialId+1), maxSpeed, acceleration, color);
+		super("Helicopter #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
 
 	}
 	public Helicopter(String name, double maxSpeed, double acceleration, Color color) {
