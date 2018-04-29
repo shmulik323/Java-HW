@@ -25,7 +25,7 @@ import utilities.EnumContainer.Color;
 
 /**
  * @author shmuel moha 204568323
- * @author alexs weizman 314342064
+ * @author alex weizman 314342064
  *
  */
 public class Program {
@@ -151,15 +151,15 @@ public class Program {
 		System.out.println("Introduction: ");
 		for (Racer racer : arena.getActiveRacers())
 			racer.introduce();
-		System.out.println("Strat Race!");
+		System.out.println("Start Race!");
 		while (arena.hasActiveRacers()) {
 			arena.playTurn();
 		}
-		System.out.println("Race Compleated!");
+		System.out.println("Race Completed!");
 	}
 
 	private static void testDefaults() {
-		System.out.println("Testing default valus and introduction.");
+		System.out.println("Testing default values and introduction.");
 		(new Car()).introduce();
 		(new Horse()).introduce();
 		(new Bicycle()).introduce();

@@ -5,7 +5,11 @@ import utilities.Point;
 import utilities.EnumContainer.Color;
 import utilities.Fate;
 import utilities.Mishap;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alex weizman 314342064
+ *
+ */
 public abstract class Racer {
 	private Arena arena;
 	private String name;
@@ -16,25 +20,38 @@ public abstract class Racer {
 	private double currentSpeed;
 	private double failurePropability;
 	private Color color;
-	private static int SerialNumber=1;
+	protected static int SerialId=0;
+	private int SerialNumber;
 	private Mishap mishap ;
 	public static void main(String[] args) {
-		
+
 
 	}
 	public Racer(String name, double maxSpeed, double acceleration, Color color) {
-		this.setName(name);
-		this.setMaxSpeed(maxSpeed);
-		this.setAcceleration(acceleration);
-		this.setColor(color);
-	}
+		this.name=name;
+		this.maxSpeed=maxSpeed;
+		this.acceleration=acceleration;
+		this.color=color;
+		this.SerialNumber=++this.SerialId;
+		}
+	/**
+	 * initializes the race
+	 * @param arena
+	 * @param start
+	 * @param finish
+	 */
 	public void initRace(Arena arena, Point start, Point finish) {
 		this.setArena(arena);
 		this.setCurrentLocation(start);
 		this.setFinish(finish);
 	}
+	/**
+	 * function that moves the racer
+	 * @param friction
+	 * @return Point object, the new location
+	 */
 	public Point move(double friction) {
-		if(this.getMishap()==null || this.getMishap().getTurnsToFix()==0) {
+		if(this.getMishap()==null || (this.getMishap().getTurnsToFix()==0 && this.getMishap().isFixable())) {
 			if(Fate.breakDown()) {
 				this.setMishap(Fate.generateMishap());
 				System.out.println(this.getName()+" Has a new mishap! "+this.getMishap().toString());
@@ -44,7 +61,7 @@ public abstract class Racer {
 			if(this.getMishap().getTurnsToFix()!=0) {
 				currentSpeed+= this.getAcceleration()*friction*this.getMishap().getReductionFactor();
 				if(this.getMishap().isFixable()) {
-					this.getMishap().setTurnsToFix(this.getMishap().getTurnsToFix()-1);
+					this.getMishap().nextTurn();
 				}
 			}
 		}
@@ -53,17 +70,23 @@ public abstract class Racer {
 		}
 		this.getCurrentLocation().setX(currentLocation.getX()+currentSpeed);
 
-		// has a chance for failure ( see section 4.2 )
 		return this.getCurrentLocation();
 	}
 
 	public abstract String describeSpecific();
-	public abstract String describeRacer();
+	public String describeRacer() {
+		
+		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
+				" acceleration: "+this.getAcceleration()+ ","+"Color: "+this.getColor()+" ";
+	}
+	
 	public void introduce() {
 		System.out.println("["+this.className()+"]"+this.describeRacer()+describeSpecific());
 
 	}
-	public abstract String className();
+	public String className() {
+		return this.getClass().getSimpleName();
+	}
 	/**
 	 * @return the arena
 	 */
@@ -73,9 +96,14 @@ public abstract class Racer {
 
 	/**
 	 * @param arena the arena to set
+	 * @return 
 	 */
-	public void setArena(Arena arena) {
+	public boolean setArena(Arena arena) {
+		if(arena!= null) {
 		this.arena = arena;
+		return true;
+		}
+		return false;
 	}
 
 	/**
@@ -87,9 +115,14 @@ public abstract class Racer {
 
 	/**
 	 * @param name the name to set
+	 * @return 
 	 */
-	public void setName(String name) {
+	public boolean setName(String name) {
+		if(name.length()!=0) {
 		this.name = name;
+		return true;
+		}
+		return false;
 	}
 
 	/**
@@ -101,9 +134,14 @@ public abstract class Racer {
 
 	/**
 	 * @param currentLocation the currentLocation to set
+	 * @return 
 	 */
-	public void setCurrentLocation(Point currentLocation) {
+	public boolean setCurrentLocation(Point currentLocation) {
+		if(currentLocation!=null) {
 		this.currentLocation = currentLocation;
+		return true;
+		}
+		return false;
 	}
 
 	/**
@@ -115,9 +153,14 @@ public abstract class Racer {
 
 	/**
 	 * @param finish the finish to set
+	 * @return 
 	 */
-	public void setFinish(Point finish) {
+	public boolean setFinish(Point finish) {
+		if(finish!=null) {
 		this.finish = finish;
+		return true;
+		}
+		return false;
 	}
 
 	/**
@@ -129,9 +172,14 @@ public abstract class Racer {
 
 	/**
 	 * @param maxSpeed the maxSpeed to set
+	 * @return 
 	 */
-	public void setMaxSpeed(double maxSpeed) {
+	public boolean setMaxSpeed(double maxSpeed) {
+		if(maxSpeed>0) {
 		this.maxSpeed = maxSpeed;
+		return true;
+		}
+		return false;
 	}
 
 	/**
@@ -143,6 +191,7 @@ public abstract class Racer {
 
 	/**
 	 * @param failurePropability the failurePropability to set
+	 * @since Home Work 3
 	 */
 	public void setFailurePropability(double failurePropability) {
 		this.failurePropability = failurePropability;
@@ -158,8 +207,12 @@ public abstract class Racer {
 	/**
 	 * @param currentSpeed the currentSpeed to set
 	 */
-	public void setCurrentSpeed(double currentSpeed) {
+	public boolean setCurrentSpeed(double currentSpeed) {
+		if(currentSpeed>=0) {
 		this.currentSpeed = currentSpeed;
+		return true;
+		}
+		return false;
 	}
 
 	/**
@@ -172,8 +225,12 @@ public abstract class Racer {
 	/**
 	 * @param acceleration the acceleration to set
 	 */
-	public void setAcceleration(double acceleration) {
+	public boolean setAcceleration(double acceleration) {
+		if(acceleration>=0) {
 		this.acceleration = acceleration;
+		return true;
+		}
+		return false;
 	}
 
 	/**
@@ -193,13 +250,18 @@ public abstract class Racer {
 	 * @return the serialNumber
 	 */
 	public static int getSerialNumber() {
-		return SerialNumber;
+		return SerialId;
 	}
 	/**
 	 * @param serialNumber the serialNumber to set
+	 * @return true if the SerialNumber is valid and false if not
 	 */
-	public static void setSerialNumber(int serialNumber) {
-		SerialNumber = serialNumber;
+	public static boolean setSerialNumber(int serialNumber) {
+		if(serialNumber>=0) {
+			SerialId = serialNumber;
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * @return the mishap

@@ -1,7 +1,11 @@
 package utilities;
 
 import java.util.Random;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alex weizman 314342064
+ *
+ */
 public class Fate {
 
 	private static Random rand = new Random();

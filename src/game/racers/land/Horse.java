@@ -1,12 +1,15 @@
 package game.racers.land;
 
 import game.racers.Racer;
-import game.racers.Wheeled;
 import utilities.EnumContainer.Breed;
 import utilities.EnumContainer.Color;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alex weizman 314342064
+ *
+ */
 public class Horse extends Racer implements LandRacer{
-	private int SerialNumber;
+	
 	private static double  maxSpeed =50;
 	private static double acceleration=3;
 	private  Breed breed =Breed.FRIESIAN ;
@@ -14,17 +17,16 @@ public class Horse extends Racer implements LandRacer{
 	
 	public Horse(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
-		SerialNumber=Racer.getSerialNumber();
-		Racer.setSerialNumber(Racer.getSerialNumber()+1);
 		
 	}
 	public Horse() {
-		super("Horse #"+getSerialNumber(), maxSpeed, acceleration, color);
-		SerialNumber=Racer.getSerialNumber();
-		Racer.setSerialNumber(Racer.getSerialNumber()+1);
+		super("Horse #"+Integer.toString(Racer.SerialId+1), maxSpeed, acceleration, color);
+
 	}
 	
-
+	/**
+	 * describes the racer specifics
+	 */
 	/* (non-Javadoc)
 	 * @see game.racers.Racer#describeSpecific()
 	 */
@@ -34,23 +36,6 @@ public class Horse extends Racer implements LandRacer{
 		return "Breed:"+this.getBreed();
 	}
 
-	/* (non-Javadoc)
-	 * @see game.racers.Racer#describeRacer()
-	 */
-	@Override
-	public String describeRacer() {
-		
-		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
-				" acceleration: "+this.getAcceleration()+ ","+"Color: "+this.getColor()+" ";
-	}
-
-	/* (non-Javadoc)
-	 * @see game.racers.Racer#className()
-	 */
-	@Override
-	public String className() {
-		return "Horse";
-	}
 	/**
 	 * @return the breed
 	 */

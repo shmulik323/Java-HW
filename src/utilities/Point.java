@@ -1,4 +1,9 @@
 package utilities;
+/**
+ * @author shmuel moha 204568323
+ * @author alex weizman 314342064
+ *
+ */
 
 public class Point {
 
@@ -30,15 +35,25 @@ public class Point {
 		this.setX(other.x);
 		this.setY(other.y);
 	}
-
+/**
+ * function that return the x parameter
+ * @return x
+ */
 	public double getX() {
 		return x;
 	}
-
+/**
+ * function that return the y parameter
+ * @return y
+ */
 	public double getY() {
 		return y;
 	}
-
+/**
+ * function 
+ * @param x
+ * @return boolean value
+ */
 	public boolean setX(double x) {
 		if (x > MAX_X || x < MIN_X) {
 			return false;
@@ -54,7 +69,6 @@ public class Point {
 		this.y = y;
 		return true;
 	}
-
 	@Override
 	public String toString() {
 		return "(" + this.getX() + "," + this.getY() + ")";

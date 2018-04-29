@@ -1,5 +1,10 @@
 package utilities;
 import java.text.DecimalFormat;
+/**
+ * @author shmuel moha 204568323
+ * @author alex weizman 314342064
+ *
+ */
 public class Mishap {
 	
 	private boolean fixable;
@@ -11,9 +16,12 @@ public class Mishap {
 		this.setReductionFactor(reductionFactor);
 		this.setTurnsToFix(turnsToFix);
 	}
+	/**
+	 * decreases the turns left to fix the mishap
+	 */
 	public void nextTurn() {
-		
-	}
+		this.turnsToFix-=1;
+		}
 	public String toString() {
 		return "("+isFixable()+","+getTurnsToFix()+","+decimalFormat.format(getReductionFactor())+")";
 		

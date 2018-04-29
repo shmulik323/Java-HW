@@ -8,7 +8,7 @@ package utilities;
  * To set a value:
  * 		this.vision = EnumContainer.Vision.Sunny
  * 
- * @author shmuel moha,alex weizman
+ * @author shmuel moha 204568323,alex weizman 314342064
  *
  */
 public class EnumContainer {

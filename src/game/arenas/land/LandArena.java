@@ -1,13 +1,18 @@
 package game.arenas.land;
 
 import utilities.EnumContainer.Surface;
+
 import game.arenas.Arena;
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
-import game.racers.air.AerialRacer;
 import game.racers.land.LandRacer;
 import utilities.EnumContainer.Coverage;
+/**
+ * @author shmuel moha 204568323
+ * @author alex weizman 314342064
+ *
+ */
 public class LandArena extends Arena {
 	
 	public static final int MAX_RACERS = 8;
@@ -24,6 +29,10 @@ public class LandArena extends Arena {
 		super(length,MAX_RACERS,FRICTION);
 		
 	}
+	/**
+	 * function adds a new racer to the arena
+	 * @param newRacer
+	 */
 	public void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException {
 		String message;
 		if(!(newRacer instanceof LandRacer)) {
@@ -31,7 +40,7 @@ public class LandArena extends Arena {
 			throw new RacerTypeException(message);
 		}
 		if(this.getActiveRacers().size()==this.getMAX_RACERS()) {
-			message = "Arena is full!"+"("+this.getActiveRacers().size()+" active racers exist)."+"racer #"+newRacer.getSerialNumber()+" was not added";
+			message = "Arena is full!"+"("+this.getActiveRacers().size()+" active racers exist)."+"racer #"+Racer.getSerialNumber()+" was not added";
 			throw new RacerLimitException(message);
 		}
 

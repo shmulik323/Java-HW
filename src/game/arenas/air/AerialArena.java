@@ -6,7 +6,11 @@ import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
 import game.racers.air.AerialRacer;
 import utilities.EnumContainer.*;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alex weizman 314342064
+ *
+ */
 public class AerialArena extends Arena{
 
 	public static final int MAX_RACERS = 6;
@@ -26,7 +30,10 @@ public class AerialArena extends Arena{
 	
 
 	
-
+/**
+ * adds a new racer to the arena
+ * @param newRacer
+ */
 	public void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException {
 		String message;
 		if(!(newRacer instanceof AerialRacer)) {
@@ -34,7 +41,7 @@ public class AerialArena extends Arena{
 			throw new RacerTypeException(message);
 		}
 		if(this.getActiveRacers().size()==this.getMAX_RACERS()) {
-			message = "Arena is full!"+"("+this.getActiveRacers().size()+" active racers exist)."+"racer #"+newRacer.getSerialNumber()+" was not added";
+			message = "Arena is full!"+"("+this.getActiveRacers().size()+" active racers exist)."+"racer #"+Racer.getSerialNumber()+" was not added";
 			throw new RacerLimitException(message);
 		}
 

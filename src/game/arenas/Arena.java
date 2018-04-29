@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
-import game.racers.air.AerialRacer;
-import game.racers.air.Airplane;
 import utilities.Point;
-
+/**
+ * @author shmuel moha 204568323
+ * @author alex weizman 314342064
+ *
+ */
 public abstract class Arena {
 	private static double length;
 	private final static int MIN_Y_GAP=10;
@@ -25,21 +27,28 @@ public abstract class Arena {
 	}
 	
 	public abstract void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException ;
-
+/**
+ * initializes the race
+ */
 	public void initRace() {
-		for (Object racer : this.activeRacers)  {
-			((Racer) racer).initRace(((Racer) racer).getArena(), new Point(0,activeRacers.size()*MIN_Y_GAP),  new Point(length,activeRacers.size()*MIN_Y_GAP));
+		for (Racer racer : this.activeRacers)  {
+			(racer).initRace(racer.getArena(), new Point(0,activeRacers.size()*MIN_Y_GAP),  new Point(length,activeRacers.size()*MIN_Y_GAP));
 			}
 		
 	}
-
+/**
+ * checks if race has active racers
+ * @return boolean value
+ */
 	public boolean hasActiveRacers() {
 		if(this.activeRacers.size()>0) {
 			return true;
 		}
 		return false;
 	}
-
+/**
+ * plays one turn
+ */
 	public void playTurn() {
 		if(!(this.getActiveRacers().isEmpty())) {
 			for(Object r:this.getActiveRacers()) {
@@ -54,11 +63,18 @@ public abstract class Arena {
 			}
 		}
 	}
+/**
+ * checks how many crossed the finish line
+ * @param racer
+ * @return number of racers that crossed finish line
+ */
 	public int crossFinishLine(Racer racer) {
 		this.completedRacers.add(racer);
 		return this.completedRacers.size();
 	}
-
+/**
+ * show the results of the race
+ */
 	public void showResults() {
 		for(Racer racer:this.completedRacers) {
 			System.out.println("#"+this.completedRacers.indexOf(racer)+" -> "+racer.describeRacer()+ racer.describeSpecific());
