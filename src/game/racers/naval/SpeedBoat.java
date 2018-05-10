@@ -11,7 +11,7 @@ public class SpeedBoat extends Racer implements NavalRacer {
 
 	private static double  maxSpeed =170;
 	private static double acceleration=10;
-	private static Color color =Color.RED;
+	private static Color color =Color.Red;
 	
 	public SpeedBoat(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
@@ -29,6 +29,12 @@ public class SpeedBoat extends Racer implements NavalRacer {
 	public String describeSpecific() {
 		
 		return "";
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

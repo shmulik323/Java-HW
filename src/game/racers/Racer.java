@@ -1,5 +1,7 @@
 package game.racers;
 
+import java.util.Observable;
+
 import game.arenas.Arena;
 import utilities.Point;
 import utilities.EnumContainer.Color;
@@ -10,7 +12,7 @@ import utilities.Mishap;
  * @author alex weizman 314342064
  *
  */
-public abstract class Racer {
+public abstract class Racer extends Observable implements Runnable{
 	private Arena arena;
 	private String name;
 	private Point currentLocation= new Point();
@@ -32,7 +34,7 @@ public abstract class Racer {
 		this.maxSpeed=maxSpeed;
 		this.acceleration=acceleration;
 		this.color=color;
-		this.SerialNumber=++this.SerialId;
+		this.SerialNumber=++Racer.SerialId;
 		}
 	/**
 	 * initializes the race
@@ -57,8 +59,8 @@ public abstract class Racer {
 				System.out.println(this.getName()+" Has a new mishap! "+this.mishap.toString());
 			}
 		}
-		if(this.getMishap()!=null) {
-			if(this.getMishap().getTurnsToFix()!=0) {
+		if(this.mishap!=null) {
+			if(this.mishap.getTurnsToFix()!=0) {
 				currentSpeed+= this.getAcceleration()*friction*this.mishap.getReductionFactor();
 				if(this.mishap.isFixable()) {
 					this.mishap.nextTurn();

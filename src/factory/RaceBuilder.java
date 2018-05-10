@@ -2,6 +2,7 @@ package factory;
 import game.arenas.Arena;
 import game.racers.Racer;
 import utilities.EnumContainer.Color;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -10,7 +11,10 @@ import java.lang.reflect.InvocationTargetException;
  * @author alex weizman 314342064
  *
  */
-public class RaceBuilder {
+public class RaceBuilder implements Runnable{
+	
+
+   
 	private static RaceBuilder instance=null;//Singleton
 	ClassLoader classLoder = ClassLoader.getSystemClassLoader();//getting the class loader
 	Class<?> reflectClass;
@@ -49,7 +53,9 @@ public class RaceBuilder {
 		reflectClass = classLoder.loadClass(arenaType);//loading the class from path
 		reflectConstractor = reflectClass.getConstructor(double.class, int.class);//loading the contractor 
 		return(Arena) reflectConstractor.newInstance(length,maxRacers);//returning a new instance of the provided class
+	
 	}
+
 	/**
 	 * 
 	 * @param racerType
@@ -97,6 +103,11 @@ public class RaceBuilder {
 		reflectConstractor = reflectClass.getConstructor(String.class, double.class, double.class, Color.class,int.class);
 		return (Racer)reflectConstractor.newInstance(name,maxSpeed,acceleration,color,numOfWheels);
 
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

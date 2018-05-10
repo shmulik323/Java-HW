@@ -13,7 +13,7 @@ public class Horse extends Racer implements LandRacer{
 	private static double  maxSpeed =50;
 	private static double acceleration=3;
 	private  Breed breed =Breed.FRIESIAN ;
-	private static  Color color=Color.BLACK;
+	private static  Color color=Color.Black;
 	
 	public Horse(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
@@ -47,6 +47,11 @@ public class Horse extends Racer implements LandRacer{
 	 */
 	public void setBreed(Breed breed) {
 		this.breed = breed;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

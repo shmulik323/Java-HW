@@ -1,6 +1,7 @@
 package game.arenas;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
@@ -11,7 +12,7 @@ import utilities.Point;
  * @author alex weizman 314342064
  *
  */
-public abstract class Arena {
+public abstract class Arena implements Runnable,Observer {
 	private static double length;
 	private final static int MIN_Y_GAP=10;
 	private static double FRICTION;

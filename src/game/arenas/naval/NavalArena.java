@@ -1,5 +1,7 @@
 package game.arenas.naval;
 
+import java.util.Observable;
+
 import game.arenas.Arena;
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
@@ -82,6 +84,16 @@ public class NavalArena extends Arena{
 	 */
 	public static void setBody(Body body) {
 		NavalArena.body = body;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -10,7 +10,7 @@ import utilities.EnumContainer.Color;
 public class Helicopter extends Racer implements AerialRacer{
 	private static double  maxSpeed =400;
 	private static double acceleration=50;
-	private static Color color =Color.BLUE;
+	private static Color color =Color.Blue;
 	
 	public Helicopter() {
 		super("Helicopter #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
@@ -27,6 +27,11 @@ public class Helicopter extends Racer implements AerialRacer{
 	public String describeSpecific() {
 		
 		return "";
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

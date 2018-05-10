@@ -20,7 +20,7 @@ public class Bicycle extends Racer implements LandRacer {
 	private static int numOfWheels=2;
 	private static double  maxSpeed =270;
 	private static double acceleration=10;
-	private static Color color =Color.GREEN;
+	private static Color color =Color.Green;
 	private Wheeled wheeled;
 	/**
 	 * 
@@ -31,7 +31,7 @@ public class Bicycle extends Racer implements LandRacer {
 	 * @param numOfWheels
 	 * {@link Constructor}
 	 */
-	public Bicycle(String name, double maxSpeed, double acceleration, Color color,int numOfWheels) {
+	public Bicycle(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
 		
@@ -55,6 +55,12 @@ public class Bicycle extends Racer implements LandRacer {
 		
 		return "NumOfWheels:"+ this.wheeled.getNumOfWheels();
 	}
+
+@Override
+public void run() {
+	// TODO Auto-generated method stub
+	
+}
 
 
 

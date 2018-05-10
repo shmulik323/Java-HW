@@ -33,11 +33,12 @@ public class Program {
 	private static Arena arena;
 	private static RaceBuilder builder = RaceBuilder.getInstance();;
 	private static ArrayList<Racer> racers;
-
+	
 	private static void addRacersToArena() {
 		for (Racer racer : racers) {
 			try {
 				arena.addRacer(racer);
+				
 			} catch (RacerLimitException e) {
 				System.out.println("[Error] " + e.getMessage());
 			} catch (RacerTypeException e) {
@@ -56,12 +57,12 @@ public class Program {
 		}
 		racers = new ArrayList<>();
 		try {
-			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "Bob", 220, 10, Color.BLUE, 3));
-			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "John", 175, 20, Color.BLUE, 3));
-			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "Frank", 180, 15, Color.BLUE, 3));
-			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Matt", 230, 8, Color.RED));
-			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "car", 15, 1, Color.GREEN, 3));
-			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Alby", 200, 8, Color.BLUE));
+			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "Bob", 220, 10, Color.Blue, 3));
+			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "John", 175, 20, Color.Blue, 3));
+			racers.add(builder.buildWheeledRacer("game.racers.air.Airplane", "Frank", 180, 15, Color.Blue, 3));
+			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Matt", 230, 8, Color.Red));
+			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "car", 15, 1, Color.Green, 3));
+			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Alby", 200, 8, Color.Blue));
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
@@ -80,12 +81,12 @@ public class Program {
 		}
 		racers = new ArrayList<>();
 		try {
-			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "Bob", 220, 10, Color.BLUE, 4));
-			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "John", 175, 20, Color.BLUE, 4));
-			racers.add(builder.buildRacer("game.racers.land.Horse", "Frank", 180, 15, Color.BLUE));
-			racers.add(builder.buildRacer("game.racers.land.Horse", "Matt", 230, 8, Color.RED));
-			racers.add(builder.buildWheeledRacer("game.racers.land.Bicycle", "Timmy", 15, 1, Color.GREEN, 3));
-			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Alby", 200, 8, Color.BLUE));
+			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "Bob", 220, 10, Color.Blue, 4));
+			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "John", 175, 20, Color.Blue, 4));
+			racers.add(builder.buildRacer("game.racers.land.Horse", "Frank", 180, 15, Color.Blue));
+			racers.add(builder.buildRacer("game.racers.land.Horse", "Matt", 230, 8, Color.Red));
+			racers.add(builder.buildWheeledRacer("game.racers.land.Bicycle", "Timmy", 15, 1, Color.Green, 3));
+			racers.add(builder.buildRacer("game.racers.air.Helicopter", "Alby", 200, 8, Color.Blue));
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
@@ -104,11 +105,11 @@ public class Program {
 		}
 		racers = new ArrayList<>();
 		try {
-			racers.add(builder.buildRacer("game.racers.naval.RowBoat", "Bob", 220, 10, Color.BLUE));
-			racers.add(builder.buildRacer("game.racers.naval.SpeedBoat", "John", 175, 20, Color.BLUE));
-			racers.add(builder.buildRacer("game.racers.naval.RowBoat", "Matt", 230, 8, Color.RED));
-			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "car", 15, 1, Color.GREEN, 3));
-			racers.add(builder.buildRacer("game.racers.land.Car", "car", 15, 1, Color.GREEN)); // intentional exception!
+			racers.add(builder.buildRacer("game.racers.naval.RowBoat", "Bob", 220, 10, Color.Blue));
+			racers.add(builder.buildRacer("game.racers.naval.SpeedBoat", "John", 175, 20, Color.Blue));
+			racers.add(builder.buildRacer("game.racers.naval.RowBoat", "Matt", 230, 8, Color.Red));
+			racers.add(builder.buildWheeledRacer("game.racers.land.Car", "car", 15, 1, Color.Green, 3));
+			racers.add(builder.buildRacer("game.racers.land.Car", "car", 15, 1, Color.Green)); // intentional exception!
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();

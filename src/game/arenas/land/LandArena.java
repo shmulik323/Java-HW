@@ -2,6 +2,8 @@ package game.arenas.land;
 
 import utilities.EnumContainer.Surface;
 
+import java.util.Observable;
+
 import game.arenas.Arena;
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
@@ -71,6 +73,16 @@ public class LandArena extends Arena {
 	 */
 	public void setLength(double length) {
 		LandArena.length = length;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -13,7 +13,7 @@ package utilities;
  */
 public class EnumContainer {
 	public enum Color {
-		RED,GREEN,BLUE,BLACK,YELLOW
+		Red,Green,Blue,Black,Yellow
 	}
 	
 	public static enum Vision {

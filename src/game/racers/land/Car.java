@@ -15,11 +15,11 @@ public class Car extends Racer implements LandRacer {
 	private static int numOfWheels=4;
 	private static double  maxSpeed =400;
 	private static double acceleration=20;
-	private static Color color =Color.RED;
+	private static Color color =Color.Red;
 	private Engine engine =Engine.BOXER;
 	private Wheeled wheeled;
-	
-	public Car(String name, double maxSpeed, double acceleration, Color color,int numOfWheels) {
+
+	public Car(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);	
 	}
@@ -57,6 +57,12 @@ public class Car extends Racer implements LandRacer {
 	/**
 	 * @return the serialNumber
 	 */
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 

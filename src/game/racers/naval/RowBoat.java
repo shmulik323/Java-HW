@@ -13,7 +13,7 @@ public class RowBoat extends Racer implements NavalRacer{
 	
 	private static double  maxSpeed =75;
 	private static double acceleration=10;
-	private static Color color =Color.RED;
+	private static Color color =Color.Red;
 	private Team team=Team.DOUBLE;
 	private Type type =Type.SKULLING;
 	
@@ -57,6 +57,11 @@ public class RowBoat extends Racer implements NavalRacer{
 	 */
 	public void setType(Type type) {
 		this.type = type;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

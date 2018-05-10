@@ -9,12 +9,13 @@ import utilities.EnumContainer.Color;
  *
  */
 public class Airplane extends Racer implements AerialRacer{
+	private static int numOfWheels=3;
 	private static double  maxSpeed =885;
 	private static double acceleration=100;
-	private static Color color =Color.BLACK;
-	private Wheeled wheeled=new Wheeled(3);
+	private static Color color =Color.Black;
+	private Wheeled wheeled;
 	
-	public Airplane(String name, double maxSpeed, double acceleration, Color color,int numOfWheels) {
+	public Airplane(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
 	}
@@ -30,6 +31,12 @@ public class Airplane extends Racer implements AerialRacer{
 	public String describeSpecific() {
 		
 		return "NumOfWheels:"+this.wheeled.getNumOfWheels();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 
