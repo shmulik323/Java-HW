@@ -1,113 +1,63 @@
 package factory;
-import game.arenas.Arena;
-import game.racers.Racer;
-import utilities.EnumContainer.Color;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * @author shmuel moha 204568323
- * @author alex weizman 314342064
- *
- */
-public class RaceBuilder implements Runnable{
-	
+import game.arenas.Arena;
+import game.racers.Racer;
+import utilities.EnumContainer.Color;
 
-   
-	private static RaceBuilder instance=null;//Singleton
-	ClassLoader classLoder = ClassLoader.getSystemClassLoader();//getting the class loader
-	Class<?> reflectClass;
-	Constructor<?> reflectConstractor;
-	
-	
-	protected RaceBuilder() {
-		// Exists only to defeat instantiation
-	}
-	/**
-	 * gets the instance of the RaceBuilder
-	 * @return instance
-	 */
+public class RaceBuilder implements Runnable {
+
+	private static RaceBuilder instance;
+
 	public static RaceBuilder getInstance() {
 		if (instance == null) {
 			instance = new RaceBuilder();
 		}
 		return instance;
 	}
-	/**
-	 * 
-	 * @param arenaType
-	 * @param length
-	 * @param maxRacers
-	 * @return a dynamic class (a reflection)
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 */
-	public Arena  buildArena(String arenaType, double length, int maxRacers) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-		reflectClass = classLoder.loadClass(arenaType);//loading the class from path
-		reflectConstractor = reflectClass.getConstructor(double.class, int.class);//loading the contractor 
-		return(Arena) reflectConstractor.newInstance(length,maxRacers);//returning a new instance of the provided class
-	
+	private ClassLoader classLoader;
+	private Class<?> classObject;
+	private Constructor<?> constructor;
+
+	private RaceBuilder() {
+		classLoader = ClassLoader.getSystemClassLoader();
 	}
 
-	/**
-	 * 
-	 * @param racerType
-	 * @param name
-	 * @param maxSpeed
-	 * @param acceleration
-	 * @param color
-	 *  @return a dynamic class (a reflection)
-	 * @throws ClassNotFoundException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 */
-	public Racer buildRacer(String racerType, String name, double maxSpeed, double
-			acceleration, utilities.EnumContainer.Color color) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-
-		reflectClass = classLoder.loadClass(racerType);
-		reflectConstractor = reflectClass.getConstructor(String.class, double.class, double.class, Color.class);
-		return (Racer)reflectConstractor.newInstance(name,maxSpeed,acceleration,color);
+	public Arena buildArena(String arenaType, double length, int maxRacers)
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		this.classObject = classLoader.loadClass(arenaType);
+		this.constructor = classObject.getConstructor(double.class, int.class);
+		return (Arena) this.constructor.newInstance(length, maxRacers);
 
 	}
-	/**
-	 * 
-	 * @param racerType
-	 * @param name
-	 * @param maxSpeed
-	 * @param acceleration
-	 * @param color
-	 * @param numOfWheels
-	 *  @return a dynamic class (a reflection)
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 */
-	public Racer buildWheeledRacer(String racerType, String name, double maxSpeed, 
-			double acceleration, Color color, int numOfWheels) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		reflectClass = classLoder.loadClass(racerType);
-		reflectConstractor = reflectClass.getConstructor(String.class, double.class, double.class, Color.class,int.class);
-		return (Racer)reflectConstractor.newInstance(name,maxSpeed,acceleration,color,numOfWheels);
 
+	public Racer buildRacer(String racerType, String name, double maxSpeed, double acceleration,
+			utilities.EnumContainer.Color color)
+					throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
+					IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		this.classObject = classLoader.loadClass(racerType);
+		this.constructor = classObject.getConstructor(String.class, double.class, double.class,
+				utilities.EnumContainer.Color.class);
+		return (Racer) this.constructor.newInstance(name, maxSpeed, acceleration, color);
 	}
+
+	public Racer buildWheeledRacer(String racerType, String name, double maxSpeed, double acceleration, Color color,
+			int numOfWheels) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
+	InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		this.classObject = classLoader.loadClass(racerType);
+		this.constructor = classObject.getConstructor(String.class, double.class, double.class,
+				utilities.EnumContainer.Color.class, int.class);
+		return (Racer) this.constructor.newInstance(name, maxSpeed, acceleration, color, numOfWheels);
+	}
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

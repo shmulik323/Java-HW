@@ -11,10 +11,13 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -25,17 +28,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableModel;
 
 import factory.RaceBuilder;
 import game.arenas.Arena;
+import game.arenas.exceptions.RacerLimitException;
+import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
 import utilities.EnumContainer.Color;
+import utilities.Point;
 
 
 public class Mainframe extends JFrame {
@@ -66,11 +75,25 @@ public class Mainframe extends JFrame {
 	private JPanel racerToolbar;
 	private JPanel Start_InfoToolbar;
 	private int yPlacement=0;
-	private static ArrayList<JLabel> racersPics =new ArrayList<JLabel>();
-
+	private JInternalFrame frame =new JInternalFrame("Message",false,true,false,true);
+	private JInternalFrame info=new JInternalFrame("Racers Information", false, true, false);
+	private String arenaChoose;
+	private int length;
+	private int maxRacers;
+	private String arenaFullName;
+	private String racerChoose;
+	private String racerName;
+	private double maxSpeed;
+	private double acceleration;
+	private String racerFullName;
+	private Racer buildRacer;
+	private Color color;
+	private boolean onGoingRaceFlag = false;
+	private JTable infoTable;
+	private String tableColumns[]= {"Racer Name","Current Speed","Max Speed","Current X Location","Finished"};
+	private Object tableData[][];
 	public Mainframe() {
 		super("Race");
-		getContentPane().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		Race_Panel=new RacePanel();
 		Race_Panel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		Race_Panel.setBorder(null);
@@ -102,19 +125,51 @@ public class Mainframe extends JFrame {
 		JButton btnStart=new JButton("Start Race");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				startButtonActionPerformed(e);
+				}
+				catch(StringIndexOutOfBoundsException e1){
+					internalErrorFrame(e1.getMessage());
+				}
 			}
 
-		
+
 		});
 		btnStart.setActionCommand("click");
-		JButton btnShowInfo=new JButton("show info");
-
+		JButton btnShowInfo=new JButton("Show Info");
+		
+		btnShowInfo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				info =new JInternalFrame("Race Information",true,true,false,false);
+				info.getContentPane().setLayout(new BorderLayout());
+				info.setSize(300, 200);
+				infoTable=new JTable(tableData,tableColumns);
+				DefaultTableModel dtm=new DefaultTableModel(0,0);	
+				dtm.setColumnIdentifiers(tableColumns);
+				infoTable.setModel(dtm);
+				dtm.addRow(tableColumns);
+				for(Racer racer: arena.getCompletedRacers()) {
+					dtm.addRow(new Object[] {racer.getName(),new Double(racer.getCurrentSpeed()), 
+								racer.getMaxSpeed(),racer.getCurrentLocation().getX(),"No" } );
+				}
+				
+				info.getContentPane().add(infoTable);
+				infoTable.setAutoResizeMode(1);
+				Race_Panel.add(info);
+				info.setVisible(true);
+			}
+		});
+		btnShowInfo.setActionCommand("click");
+		
 		BorderLayout border=new BorderLayout();
 		border.setHgap(10);
 		border.setVgap(20);
 		getContentPane().setLayout(border);
-
+		
+		
 		cmbArena = new JComboBox<String>();
 		for (String string : RacingClassesFinder.getInstance().getArenasNamesList()) {
 			cmbArena.addItem(string);
@@ -134,7 +189,9 @@ public class Mainframe extends JFrame {
 		getContentPane().add(Race_Panel,BorderLayout.CENTER);
 		Race_Panel.setLayout(null);
 
-		
+
+
+
 
 		getContentPane().add(toolbar,BorderLayout.EAST);
 
@@ -148,12 +205,14 @@ public class Mainframe extends JFrame {
 		arenaToolbar.add(Box.createVerticalStrut(5));
 		lblArenaLength.setAlignmentX(Component.CENTER_ALIGNMENT);
 		arenaToolbar.add(lblArenaLength);
+		txtArenaLength.setText("1000");
 		txtArenaLength.setAlignmentX(Component.CENTER_ALIGNMENT);
 		txtArenaLength.setMaximumSize(new Dimension(100, 25));
 		arenaToolbar.add(txtArenaLength);
 		arenaToolbar.add(Box.createVerticalStrut(5));
 		lblMaxRacer.setAlignmentX(Component.CENTER_ALIGNMENT);
 		arenaToolbar.add(lblMaxRacer);
+		txtMaxRacers.setText("8");
 		txtMaxRacers.setAlignmentX(Component.CENTER_ALIGNMENT);
 		txtMaxRacers.setMaximumSize(new Dimension(100, 25));
 		arenaToolbar.add(txtMaxRacers);
@@ -186,12 +245,14 @@ public class Mainframe extends JFrame {
 		racerToolbar.add(Box.createVerticalStrut(5));
 		lblMaxSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
 		racerToolbar.add(lblMaxSpeed);
+		txtMaxSpeed.setText("120");
 		txtMaxSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
 		txtMaxSpeed.setMaximumSize(new Dimension(100, 25));
 		racerToolbar.add(txtMaxSpeed);
 		racerToolbar.add(Box.createVerticalStrut(5));
 		lblAcceleration.setAlignmentX(Component.CENTER_ALIGNMENT);
 		racerToolbar.add(lblAcceleration);
+		txtAcceleration.setText("8");
 		txtAcceleration.setAlignmentX(Component.CENTER_ALIGNMENT);
 		txtAcceleration.setMaximumSize(new Dimension(100, 25));
 		racerToolbar.add(txtAcceleration);
@@ -237,81 +298,108 @@ public class Mainframe extends JFrame {
 
 		String action = e.getActionCommand();
 		if (action.equals("click")) {
-			String arenaChoose=(String)cmbArena.getSelectedItem();
-			String length=txtArenaLength.getText();
-			String maxRacers=txtMaxRacers.getText();
-			String arenaFullName = null;
-			for(String string:RacingClassesFinder.getInstance().getArenasList()) {
-				if(string.contains(arenaChoose)) {
-					arenaFullName=string;
+			intiArenaFromGui();
+			if(length<100 ||length>3000|| maxRacers>20 || maxRacers<1 ) {
+				internalErrorFrame("Invalid input values! Please try again.");
+			}
+			else {
+				try {
+					arena = builder.buildArena(arenaFullName,length, maxRacers);
+				} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
+						| IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+					System.out.println("Unable to build arena!");
 				}
+				System.out.println(arena.toString());
+
+				try {
+					image = ImageIO.read(Mainframe.class.getResource("icons/arena/"+arenaChoose+".jpg"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				int newRacePanelWidth =length;
+				int newRacePanelHight = (int) (87.5*maxRacers);
+				int newFrameWidth= newRacePanelWidth+racerToolbar.getWidth();
+				int newFrameHeight = newRacePanelHight;
+
+				if((maxRacers)>=8) {
+					Race_Panel.setSize(newRacePanelWidth,newRacePanelHight);
+					setSize(newFrameWidth, newFrameHeight);
+				}
+				Race_Panel.changeImage(image);
+
+
+
 			}
-			try {
-				arena = builder.buildArena(arenaFullName,Double.parseDouble(length), Integer.parseInt(maxRacers));
-			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
-					| IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
-				System.out.println("Unable to build arena!");
-			}
-			System.out.println(arena.toString());
-
-			try {
-				image = ImageIO.read(Mainframe.class.getResource("icons/arena/"+arenaChoose+".jpg"));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			int newRacePanelWidth = Integer.parseInt(length);
-			int newRacePanelHight = (int) (87.5*Integer.parseInt(maxRacers));
-			int newFrameWidth= newRacePanelWidth+racerToolbar.getWidth();
-			int newFrameHeight = newRacePanelHight;
-			
-			if(Integer.parseInt(maxRacers)>=8) {
-				Race_Panel.setSize(newRacePanelWidth,newRacePanelHight);
-				setSize(newFrameWidth, newFrameHeight);
-			}
-			Race_Panel.changeImage(image);
-
-
-
-
 		}
+
+	}
+	public void intiArenaFromGui() {
+		Race_Panel.removeAll();
+		if(arena !=null) {
+			arena.setActiveRacers(new ArrayList<Racer>());
+			racers=new ArrayList<Racer>();
+			yPlacement=0;
+			onGoingRaceFlag=false;
+		}
+		arenaChoose = (String)cmbArena.getSelectedItem();
+		length = Integer.parseInt(txtArenaLength.getText());
+		maxRacers = Integer.parseInt(txtMaxRacers.getText());
+		arenaFullName = "";
+		for(String string:RacingClassesFinder.getInstance().getArenasList()) {
+			if(string.contains(arenaChoose)) {
+				arenaFullName=string;
+			}
+		}
+	}
+	public void internalErrorFrame(String messege) {
+		frame =new JInternalFrame("Message",false,true,false,false);
+		Race_Panel.add(frame);
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+		JButton okButton = new JButton("OK");
+		JLabel error = new JLabel(messege);
+		frame.getContentPane().add(Box.createVerticalStrut(20));
+		error.setAlignmentX(Component.CENTER_ALIGNMENT);
+		frame.getContentPane().add(error);
+		frame.getContentPane().add(Box.createVerticalStrut(40));
+
+		okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		frame.getContentPane().add(okButton);
+
+		frame.setBounds(290, 189, 313, 165);
+		frame.setVisible(true);
+
+		okButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					frame.setClosed(true);
+					Race_Panel.remove(frame);
+				} catch (PropertyVetoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+
 
 	}
 	public void racerButtonActionPreformed(ActionEvent e) {
 
 		String action = e.getActionCommand();
 		if (action.equals("click")) {
-			String racerChoose=(String)cmbRacers.getSelectedItem();
-			String racerName=txtRacerName.getText();
-			double maxSpeed=Double.parseDouble(txtMaxSpeed.getText());
-			double acceleration=Double.parseDouble(txtAcceleration.getText());
-			String racerFullName = null;
-			Racer buildRacer=null;
-			Color color =(Color)cmbColor.getSelectedItem();
-			for(String string:RacingClassesFinder.getInstance().getRacersList()) {
-				if(string.contains(racerChoose)) {
-					racerFullName=string;
-				}
-			}
 			try {
-				buildRacer = builder.buildRacer(racerFullName, racerName, maxSpeed, acceleration, color);
-				racers.add(buildRacer);
-				
+				initRacerFromGui();
+				addRacerAndPaint();
+
+
 			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
-					| IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
-				System.out.println("Unable to build racer!");
+					| IllegalAccessException | IllegalArgumentException | InvocationTargetException | RacerLimitException | RacerTypeException |StringIndexOutOfBoundsException  e1) {
+				internalErrorFrame(e1.getMessage());
 			}
 
-
-
-			JLabel label =new JLabel("");
-			ImageIcon imageIcon = new ImageIcon(Mainframe.class.getResource("/factory/Gui/icons/"+racerChoose+color.toString()+".png"));
-			imageIcon=new ImageIcon(getScaledImage(imageIcon.getImage(),70,70));
-			label.setIcon(imageIcon);
-			label.setBounds(0, yPlacement*(arena.getMinYGap()+70), 70, 70);
-			racersPics.add(label);
-			Race_Panel.add(racersPics.get(yPlacement));
-			yPlacement++;
 			revalidate();
 			repaint();
 
@@ -321,18 +409,95 @@ public class Mainframe extends JFrame {
 		}
 
 	}
-	private Image getScaledImage(Image srcImg, int w, int h){
-	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g2 = resizedImg.createGraphics();
-
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(srcImg, 0, 0, w, h, null);
-	    g2.dispose();
-
-	    return resizedImg;
+	public void addRacerAndPaint() throws ClassNotFoundException, NoSuchMethodException, InstantiationException,
+	IllegalAccessException, InvocationTargetException, RacerLimitException, RacerTypeException {
+		buildRacer = builder.buildRacer(racerFullName, racerName, maxSpeed, acceleration, color);
+		racers.add(buildRacer);
+		arena.addRacer(buildRacer);
+		ImageIcon imageIcon = new ImageIcon(Mainframe.class.getResource("/factory/Gui/icons/"+racerChoose+color.toString()+".png"));
+		imageIcon=new ImageIcon(getScaledImage(imageIcon.getImage(),70,70));
+		buildRacer.getIcon().setIcon(imageIcon);
+		buildRacer.setCurrentLocation(new Point(0,yPlacement*(arena.getMinYGap())));
+		buildRacer.getIcon().setBounds(0, yPlacement*(arena.getMinYGap()), 70, 70);
+		Race_Panel.add(buildRacer.getIcon());
+		yPlacement++;
 	}
-	private void startButtonActionPerformed(ActionEvent event) {
-		
-		
+	public void initRacerFromGui() throws StringIndexOutOfBoundsException {
+		if(arena ==null) {
+			throw new StringIndexOutOfBoundsException("There is no arena!!!!");
+		}
+		if(onGoingRaceFlag==true) {
+			throw new StringIndexOutOfBoundsException("There is an ongoing race");
+		}
+		if(txtRacerName.getText().isEmpty() || txtMaxSpeed.getText().isEmpty() || txtAcceleration.getText().isEmpty()
+				|| Double.parseDouble(txtMaxSpeed.getText())<0|| Double.parseDouble(txtAcceleration.getText())<0 ) {
+			throw  new StringIndexOutOfBoundsException("Invalid Data Input! Please try again.");
+		}
+		racerChoose = (String)cmbRacers.getSelectedItem();
+		racerName = txtRacerName.getText();
+		maxSpeed = Double.parseDouble(txtMaxSpeed.getText());
+		acceleration = Double.parseDouble(txtAcceleration.getText());
+		racerFullName = null;
+		buildRacer = null;
+		color = (Color)cmbColor.getSelectedItem();
+		for(String string:RacingClassesFinder.getInstance().getRacersList()) {
+			if(string.contains(racerChoose)) {
+				racerFullName=string;
+			}
+		}
+
+
+	}
+	private Image getScaledImage(Image srcImg, int w, int h){
+		BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = resizedImg.createGraphics();
+
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2.drawImage(srcImg, 0, 0, w, h, null);
+		g2.dispose();
+
+		return resizedImg;
+	}
+	private void startButtonActionPerformed(ActionEvent event) throws StringIndexOutOfBoundsException {
+		if(arena ==null) {
+			throw new StringIndexOutOfBoundsException("There is no arena");
+		}
+		if(onGoingRaceFlag==true) {
+			throw new StringIndexOutOfBoundsException("There is an ongoing race");
+		}
+		if(arena.getActiveRacers().isEmpty()) {
+			throw new StringIndexOutOfBoundsException("There is no racers in the arena");
+		}
+		ExecutorService threadPool = Executors.newFixedThreadPool(1);
+		arena.initRace();
+		onGoingRaceFlag=true;
+		threadPool.submit(new Runnable() {
+			@Override
+			public void run() {
+				while(arena.hasActiveRacers()) {
+					arena.startRace();
+					for(Racer racer : racers) {
+						if(racer.getIcon().getLocation().getX()<(arena.getLength()-100)) {
+							racer.getIcon().setLocation((int)racer.getCurrentLocation().getX(),(int)racer.getCurrentLocation().getY());
+						}
+						else {
+							racer.getIcon().setLocation((int)arena.getLength()-100,(int)racer.getCurrentLocation().getY());
+						}
+						revalidate();
+						repaint();
+						System.out.println(racer.getCurrentLocation().getX());
+
+					}
+				}
+
+				try {
+					Thread.sleep(30);
+				} catch(InterruptedException e) {
+
+				}
+
+			}
+		});
+
 	}
 }

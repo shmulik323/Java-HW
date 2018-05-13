@@ -154,7 +154,7 @@ public class Program {
 			racer.introduce();
 		System.out.println("Strat Race!");
 		while (arena.hasActiveRacers()) {
-			arena.playTurn();
+			
 		}
 		System.out.println("Race Compleated!");
 	}

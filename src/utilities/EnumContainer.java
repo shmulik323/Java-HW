@@ -53,4 +53,7 @@ public class EnumContainer {
 		SINGLE,DOUBLE,QUAD,EIGHT
 		
 	}
+	public static enum RacerEvent{
+		FINISHED,BROKENDOWN,REPAIRED,DISABLED
+	}
 }

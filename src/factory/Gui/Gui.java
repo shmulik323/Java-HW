@@ -3,7 +3,6 @@ package factory.Gui;
 import javax.swing.SwingUtilities;
 
 public class Gui implements Runnable{
-	private static Mainframe frame;
 
 		public static void main(String[] args) {
 			
@@ -11,7 +10,7 @@ public class Gui implements Runnable{
 
 				@Override
 				public void run() {
-					frame = new Mainframe();
+					new Mainframe();
 
 				}
 			});

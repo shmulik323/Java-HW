@@ -2,11 +2,14 @@ package game.racers;
 
 import java.util.Observable;
 
+import javax.swing.JLabel;
+
 import game.arenas.Arena;
-import utilities.Point;
 import utilities.EnumContainer.Color;
+import utilities.EnumContainer.RacerEvent;
 import utilities.Fate;
 import utilities.Mishap;
+import utilities.Point;
 /**
  * @author shmuel moha 204568323
  * @author alex weizman 314342064
@@ -20,22 +23,20 @@ public abstract class Racer extends Observable implements Runnable{
 	private double maxSpeed;
 	private double acceleration;
 	private double currentSpeed;
-	private double failurePropability;
+	private double failurePropability =0.01;
 	private Color color;
 	protected static int SerialId=0;
 	private int SerialNumber;
 	private Mishap mishap ;
-	public static void main(String[] args) {
+	private JLabel icon=new JLabel("");
 
-
-	}
 	public Racer(String name, double maxSpeed, double acceleration, Color color) {
 		this.name=name;
 		this.maxSpeed=maxSpeed;
 		this.acceleration=acceleration;
 		this.color=color;
 		this.SerialNumber=++Racer.SerialId;
-		}
+	}
 	/**
 	 * initializes the race
 	 * @param arena
@@ -52,36 +53,49 @@ public abstract class Racer extends Observable implements Runnable{
 	 * @param friction
 	 * @return Point object, the new location
 	 */
-	public Point move(double friction) {
-		if(this.mishap==null || (this.mishap.getTurnsToFix()==0 && this.mishap.isFixable())) {
-			if(Fate.breakDown()) {
-				this.mishap=Fate.generateMishap();
-				System.out.println(this.getName()+" Has a new mishap! "+this.mishap.toString());
+	public synchronized Point move(double friction) {
+		double reductionFactor = 1;
+		if (!(this.hasMishap()) && Fate.breakDown(failurePropability)) {
+			this.mishap=Fate.generateMishap();
+			this.setChanged();
+			this.notifyObservers(RacerEvent.BROKENDOWN);
+			System.out.println(this.getName()+" Has a new mishap! "+this.mishap.toString());
+		}
+
+		if (this.hasMishap()) {
+			reductionFactor = mishap.getReductionFactor();
+			if(this.mishap.isFixable()) {
+				this.mishap.nextTurn();
+			}
+			else {
+				this.setChanged();
+				this.notifyObservers(RacerEvent.DISABLED);
+
 			}
 		}
-		if(this.mishap!=null) {
-			if(this.mishap.getTurnsToFix()!=0) {
-				currentSpeed+= this.getAcceleration()*friction*this.mishap.getReductionFactor();
-				if(this.mishap.isFixable()) {
-					this.mishap.nextTurn();
-				}
-			}
+
+		if (this.currentSpeed < this.maxSpeed) {
+			this.currentSpeed += this.acceleration * friction * reductionFactor;
 		}
-		else if(this.currentSpeed<this.maxSpeed) {
-			currentSpeed+=acceleration*friction;
+		if (this.currentSpeed > this.maxSpeed) {
+			this.currentSpeed = this.maxSpeed;
 		}
 		this.currentLocation.setX(this.currentLocation.getX()+this.currentSpeed);
-
+		if(this.currentLocation.getX()>=this.arena.getLength()) {
+			this.setChanged();
+			this.notifyObservers(RacerEvent.FINISHED);
+			this.currentLocation.setX(arena.getLength());
+		}
 		return this.currentLocation;
 	}
 
 	public String describeRacer() {
-		
+
 		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
 				" acceleration: "+this.acceleration+ ","+"Color: "+this.color+" ";
 	}
 	public abstract String describeSpecific();//abstract method 
-	
+
 	public void introduce() {
 		System.out.println("["+this.className()+"]"+this.describeRacer()+this.describeSpecific());
 
@@ -102,8 +116,8 @@ public abstract class Racer extends Observable implements Runnable{
 	 */
 	public boolean setArena(Arena arena) {
 		if(arena!= null) {
-		this.arena = arena;
-		return true;
+			this.arena = arena;
+			return true;
 		}
 		return false;
 	}
@@ -121,8 +135,8 @@ public abstract class Racer extends Observable implements Runnable{
 	 */
 	public boolean setName(String name) {
 		if(name.length()!=0) {
-		this.name = name;
-		return true;
+			this.name = name;
+			return true;
 		}
 		return false;
 	}
@@ -140,8 +154,8 @@ public abstract class Racer extends Observable implements Runnable{
 	 */
 	public boolean setCurrentLocation(Point currentLocation) {
 		if(currentLocation!=null) {
-		this.currentLocation = currentLocation;
-		return true;
+			this.currentLocation = currentLocation;
+			return true;
 		}
 		return false;
 	}
@@ -159,8 +173,8 @@ public abstract class Racer extends Observable implements Runnable{
 	 */
 	public boolean setFinish(Point finish) {
 		if(finish!=null) {
-		this.finish = finish;
-		return true;
+			this.finish = finish;
+			return true;
 		}
 		return false;
 	}
@@ -178,8 +192,8 @@ public abstract class Racer extends Observable implements Runnable{
 	 */
 	public boolean setMaxSpeed(double maxSpeed) {
 		if(maxSpeed>0) {
-		this.maxSpeed = maxSpeed;
-		return true;
+			this.maxSpeed = maxSpeed;
+			return true;
 		}
 		return false;
 	}
@@ -211,8 +225,8 @@ public abstract class Racer extends Observable implements Runnable{
 	 */
 	public boolean setCurrentSpeed(double currentSpeed) {
 		if(currentSpeed>=0) {
-		this.currentSpeed = currentSpeed;
-		return true;
+			this.currentSpeed = currentSpeed;
+			return true;
 		}
 		return false;
 	}
@@ -229,8 +243,8 @@ public abstract class Racer extends Observable implements Runnable{
 	 */
 	public boolean setAcceleration(double acceleration) {
 		if(acceleration>=0) {
-		this.acceleration = acceleration;
-		return true;
+			this.acceleration = acceleration;
+			return true;
 		}
 		return false;
 	}
@@ -277,5 +291,39 @@ public abstract class Racer extends Observable implements Runnable{
 	public void setMishap(Mishap mishap) {
 		this.mishap = mishap;
 	}
+	/**
+	 * @return the icon
+	 */
+	public JLabel getIcon() {
+		return icon;
+	}
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(JLabel icon) {
+		this.icon = icon;
+	}
+	public boolean threadIsStoped() {
+		if(this.arena.getCompletedRacers().contains(this)) {return true;}
+		return false;
+	}
+	@Override
+	public void run() {
+		this.setCurrentLocation(this.move(this.getArena().getFRICTION()));
+		try {
+			Thread.currentThread().sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Thread.currentThread().notify();
+		}
+
+
+	}
+	private boolean hasMishap() {
+		if (this.mishap != null && this.mishap.getTurnsToFix() == 0)
+			this.mishap = null;
+		return this.mishap != null;
+	}
+
 
 }

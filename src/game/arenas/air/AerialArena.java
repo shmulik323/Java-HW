@@ -88,14 +88,9 @@ public class AerialArena extends Arena{
 	public static void setWind(Wind w) {
 		wind=w;
 	}
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		super.update(o, arg);
 	}
 }

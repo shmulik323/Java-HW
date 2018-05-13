@@ -60,8 +60,7 @@ public class Car extends Racer implements LandRacer {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		super.run();
 	}
 
 

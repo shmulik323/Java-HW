@@ -26,8 +26,8 @@ public class Fate {
 		return rand.nextInt(5);
 	}
 	
-	public static boolean breakDown() {
-		return rand.nextBoolean();
+	public static boolean breakDown(double failureProbability) {
+		return rand.nextFloat() <= failureProbability;
 	}
 
 	public static Mishap generateMishap() {

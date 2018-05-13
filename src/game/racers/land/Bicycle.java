@@ -56,11 +56,11 @@ public class Bicycle extends Racer implements LandRacer {
 		return "NumOfWheels:"+ this.wheeled.getNumOfWheels();
 	}
 
-@Override
-public void run() {
-	// TODO Auto-generated method stub
-	
-}
+	@Override
+	public void run() {
+		super.run();
+	}
+
 
 
 

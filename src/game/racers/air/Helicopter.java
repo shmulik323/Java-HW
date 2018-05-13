@@ -28,10 +28,10 @@ public class Helicopter extends Racer implements AerialRacer{
 		
 		return "";
 	}
+	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		super.run();
 	}
 
 

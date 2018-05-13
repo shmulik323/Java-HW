@@ -60,8 +60,8 @@ public class RowBoat extends Racer implements NavalRacer{
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		super.run();
 	}
+
 
 }
