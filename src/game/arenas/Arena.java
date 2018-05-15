@@ -9,7 +9,6 @@ import java.util.concurrent.Executors;
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
-
 import utilities.Point;
 /**
  * @author shmuel moha 204568323
@@ -41,7 +40,7 @@ public abstract class Arena implements Observer {
 		int y = 0;
 		for (Racer racer : this.activeRacers) {
 			Point s = new Point(0, y);
-			Point f = new Point(this.length, y);
+			Point f = new Point(Arena.length, y);
 			racer.initRace(this, s, f);
 			y += Arena.MIN_Y_GAP;
 			racer.addObserver(this);
@@ -60,15 +59,14 @@ public abstract class Arena implements Observer {
 	}
 
 	public void startRace() {
-		ExecutorService ex= Executors.newFixedThreadPool(getMAX_RACERS());
+		ExecutorService ex=Executors.newFixedThreadPool(this.activeRacers.size());
 		for(Racer racer:this.activeRacers) {
 			ex.execute(racer);
-			System.out.println(this.hasActiveRacers());
-			System.out.println(racer.getCurrentLocation().getX());
-
-
+			if(this.completedRacers.contains(racer)) {
+				ex.shutdown();
+			}
 		}
-		ex.shutdown();
+
 	}
 
 	/**
@@ -80,31 +78,27 @@ public abstract class Arena implements Observer {
 		}
 
 	}
-	public void update(Observable o, Object arg){
+	public synchronized void update(Observable o, Object arg){
 		String string = arg.toString();
-		System.out.println(string);
-		System.out.println(o.toString());
+		switch (string) {
+		case "FINISHED":
+			this.completedRacers.add((Racer) o);
+			this.activeRacers.remove((Racer)o);	
+			break;
+		case "BROKENDOWN":
+			this.brokenRacers.add((Racer) o);
+			break;
+		case "DISABLED":
+			this.disabledRacers.add((Racer)o);
+			this.activeRacers.remove((Racer) o);
+			break;
+		case "REPAIRED":
+			this.brokenRacers.remove((Racer) o);
+			break;
+		default:
+			break;
+		}
 
-			switch (string) {
-			case "FINISHED":
-				this.completedRacers.add((Racer) o);
-				this.activeRacers.remove((Racer)o);	
-				System.out.println(this.activeRacers.size());
-				break;
-			case "BROKENDOWN":
-				this.brokenRacers.add((Racer) o);
-				break;
-			case "DISABLED":
-				this.disabledRacers.add((Racer)o);
-				this.activeRacers.remove((Racer) o);
-				break;
-			case "REPAIRED":
-				this.brokenRacers.remove((Racer) o);
-				break;
-			default:
-				break;
-			}
-		
 	}
 
 	/**

@@ -2,8 +2,6 @@ package game.racers;
 
 import java.util.Observable;
 
-import javax.swing.JLabel;
-
 import game.arenas.Arena;
 import utilities.EnumContainer.Color;
 import utilities.EnumContainer.RacerEvent;
@@ -23,12 +21,11 @@ public abstract class Racer extends Observable implements Runnable{
 	private double maxSpeed;
 	private double acceleration;
 	private double currentSpeed;
-	private double failurePropability =0.01;
+	private double failurePropability =0.05;
 	private Color color;
 	protected static int SerialId=0;
 	private int SerialNumber;
 	private Mishap mishap ;
-	private JLabel icon=new JLabel("");
 
 	public Racer(String name, double maxSpeed, double acceleration, Color color) {
 		this.name=name;
@@ -55,11 +52,11 @@ public abstract class Racer extends Observable implements Runnable{
 	 */
 	public synchronized Point move(double friction) {
 		double reductionFactor = 1;
+		if(!this.arena.getDisabledRacers().contains(this)) {
 		if (!(this.hasMishap()) && Fate.breakDown(failurePropability)) {
 			this.mishap=Fate.generateMishap();
 			this.setChanged();
 			this.notifyObservers(RacerEvent.BROKENDOWN);
-			System.out.println(this.getName()+" Has a new mishap! "+this.mishap.toString());
 		}
 
 		if (this.hasMishap()) {
@@ -70,7 +67,10 @@ public abstract class Racer extends Observable implements Runnable{
 			else {
 				this.setChanged();
 				this.notifyObservers(RacerEvent.DISABLED);
-
+			}
+			if(this.mishap.getTurnsToFix()==0) {
+				this.setChanged();
+				this.notifyObservers(RacerEvent.REPAIRED);
 			}
 		}
 
@@ -80,11 +80,14 @@ public abstract class Racer extends Observable implements Runnable{
 		if (this.currentSpeed > this.maxSpeed) {
 			this.currentSpeed = this.maxSpeed;
 		}
+		
 		this.currentLocation.setX(this.currentLocation.getX()+this.currentSpeed);
+		}
 		if(this.currentLocation.getX()>=this.arena.getLength()) {
+			this.currentLocation.setX(arena.getLength());
 			this.setChanged();
 			this.notifyObservers(RacerEvent.FINISHED);
-			this.currentLocation.setX(arena.getLength());
+			
 		}
 		return this.currentLocation;
 	}
@@ -291,32 +294,23 @@ public abstract class Racer extends Observable implements Runnable{
 	public void setMishap(Mishap mishap) {
 		this.mishap = mishap;
 	}
-	/**
-	 * @return the icon
-	 */
-	public JLabel getIcon() {
-		return icon;
-	}
-	/**
-	 * @param icon the icon to set
-	 */
-	public void setIcon(JLabel icon) {
-		this.icon = icon;
-	}
+
 	public boolean threadIsStoped() {
 		if(this.arena.getCompletedRacers().contains(this)) {return true;}
 		return false;
 	}
 	@Override
-	public void run() {
-		this.setCurrentLocation(this.move(this.getArena().getFRICTION()));
+	public synchronized void run() {
+		this.getArena();
+		while(!arena.getCompletedRacers().contains(this)) {
+		this.move(Arena.getFRICTION());
 		try {
-			Thread.currentThread().sleep(100);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			Thread.currentThread().notify();
 		}
-
+		}
 
 	}
 	private boolean hasMishap() {
