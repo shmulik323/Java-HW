@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 
 import factory.Gui.Mainframe;
 
-public class program {
+public class Gui {
 
 		public static void main(String[] args) {
 			
