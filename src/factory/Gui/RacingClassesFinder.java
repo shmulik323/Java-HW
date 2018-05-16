@@ -8,6 +8,12 @@ import java.util.List;
 
 import game.arenas.Arena;
 import game.racers.Racer;
+/**
+ * 
+ * @author Alex Weizman 314342064, 
+ * @author Shmuel moha 204568323
+ *
+ */
 
 public class RacingClassesFinder {
 	private static String GAME_PACKAGE = "game";

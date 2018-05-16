@@ -5,6 +5,12 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.JPanel;
+/**
+ * 
+ * @author Alex Weizman 314342064, 
+ * @author Shmuel moha 204568323
+ *
+ */
 
 public class RacePanel extends JPanel {
 
@@ -19,16 +25,6 @@ public class RacePanel extends JPanel {
 	 */
 	public RacePanel() {
 
-	}
-	public RacePanel(Image img) {
-		super(new GridLayout());
-		this.image = img;
-		Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-		setPreferredSize(size);
-		setMinimumSize(size);
-		setMaximumSize(size);
-		setSize(size);
-		setLayout(null);
 	}
 
     @Override

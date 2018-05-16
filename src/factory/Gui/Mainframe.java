@@ -11,7 +11,6 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -48,6 +48,12 @@ import game.racers.Racer;
 import utilities.EnumContainer.Color;
 import utilities.Point;
 
+/**
+ * 
+ * @author Alex Weizman 314342064, 
+ * @author Shmuel moha 204568323
+ *
+ */
 
 public class Mainframe extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -77,8 +83,6 @@ public class Mainframe extends JFrame {
 	private JPanel racerToolbar;
 	private JPanel Start_InfoToolbar;
 	private int yPlacement=0;
-	private JInternalFrame frame =new JInternalFrame("Message",false,true,false,true);
-	private JInternalFrame info=new JInternalFrame("Racers Information", false, true, false);
 	private String arenaChoose;
 	private int length;
 	private int maxRacers;
@@ -112,7 +116,9 @@ public class Mainframe extends JFrame {
 		racerToolbar.setBorder(new MatteBorder(0, 0, 1, 0, (java.awt.Color) new java.awt.Color(0, 0, 0)));
 		Start_InfoToolbar = new JPanel();
 		Start_InfoToolbar.setBorder(null);
-
+		/**
+		 * 	build arena button with action listener that builds the arena.
+		 */
 		JButton btnBuildArena=new JButton("Build Arena");
 		btnBuildArena.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -120,6 +126,9 @@ public class Mainframe extends JFrame {
 			}
 		});
 		btnBuildArena.setActionCommand("click");
+		/**
+		 * AddRacer button adds the racer after the info is filled.
+		 */
 		JButton btnAddRacer=new JButton("Add Racer");
 		btnAddRacer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -127,6 +136,9 @@ public class Mainframe extends JFrame {
 			}
 		});
 		btnAddRacer.setActionCommand("click");
+		/**
+		 * start button for the race
+		 */
 		JButton btnStart=new JButton("Start Race");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -134,7 +146,7 @@ public class Mainframe extends JFrame {
 					startButtonActionPerformed(e);
 				}
 				catch(StringIndexOutOfBoundsException e1){
-					internalErrorFrame(e1.getMessage());
+					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 			}
 
@@ -142,14 +154,14 @@ public class Mainframe extends JFrame {
 		});
 		btnStart.setActionCommand("click");
 		JButton btnShowInfo=new JButton("Show Info");
-
+		/**
+		 * show info button that shows the racers info in the start middle or end of the race
+		 */
 		btnShowInfo.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				finish="No";
-				info =new JInternalFrame("Race Information",true,true,false,false);
-				info.getContentPane().setLayout(new BorderLayout());
 				infoTable=new JTable(tableData,tableColumns);
 				DefaultTableModel dtm=new DefaultTableModel(0,0);	
 				dtm.setColumnIdentifiers(tableColumns);
@@ -158,6 +170,8 @@ public class Mainframe extends JFrame {
 				for(Racer racer: racers) {
 					if(arena.getCompletedRacers().contains(racer))
 						finish="Yes";
+					else if(arena.getDisabledRacers().contains(racer))
+						finish="Disabled";
 					dtm.addRow(new Object[] {racer.getName(),new Double(racer.getCurrentSpeed()), 
 							racer.getMaxSpeed(),racer.getCurrentLocation().getX(),finish } );
 					finish="No";
@@ -170,6 +184,8 @@ public class Mainframe extends JFrame {
 						for(Racer racer: racers) {
 							if(arena.getCompletedRacers().contains(racer))
 								finish="Yes";
+							else if(arena.getDisabledRacers().contains(racer))
+								finish="Disabled";
 							dtm.addRow(new Object[] {racer.getName(),new Double(racer.getCurrentSpeed()), 
 									racer.getMaxSpeed(),racer.getCurrentLocation().getX(),finish } );
 							finish="No";
@@ -177,36 +193,42 @@ public class Mainframe extends JFrame {
 
 					}
 				});
-				info.getContentPane().add(infoTable);
-				info.setBounds(290, 189, 500, 200);
-				infoTable.setAutoResizeMode(1);
-				Race_Panel.add(info);
-				info.setVisible(true);
+				JOptionPane.showMessageDialog(null,infoTable);
 			}
 		});
 		btnShowInfo.setActionCommand("click");
-
+		/**
+		 * setting the layout for the frame
+		 */
 		BorderLayout border=new BorderLayout();
 		border.setHgap(10);
 		border.setVgap(20);
 		getContentPane().setLayout(border);
 
-
+		/**
+		 * arena combo box build
+		 */
 		cmbArena = new JComboBox<String>();
 		for (String string : RacingClassesFinder.getInstance().getArenasNamesList()) {
 			cmbArena.addItem(string);
 		}
 
-
+		/**
+		 * racer combo box build
+		 */
 		cmbRacers = new JComboBox<String>();
 		for (String string : RacingClassesFinder.getInstance().getRacersNamesList()) {
 			cmbRacers.addItem(string);
 		}
 
+		/**
+		 * racer color combo box build
+		 */
 		cmbColor = new JComboBox<Color>();
 		for (Color string : Arrays.asList(Color.values())) {
 			cmbColor.addItem(string);
 		}
+
 
 		getContentPane().add(Race_Panel,BorderLayout.CENTER);
 		Race_Panel.setLayout(null);
@@ -214,9 +236,13 @@ public class Mainframe extends JFrame {
 
 
 
-
+		/**
+		 * setting the toolbar location in the layout
+		 */
 		getContentPane().add(toolbar,BorderLayout.EAST);
-
+		/**
+		 * setting all the components in the arena panel in the toolbar
+		 */
 		arenaToolbar.setLayout(new BoxLayout(arenaToolbar, BoxLayout.Y_AXIS));
 		arenaToolbar.add(Box.createVerticalStrut(5));
 		lblArenaChoose.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -244,7 +270,9 @@ public class Mainframe extends JFrame {
 		arenaToolbar.add(btnBuildArena);
 		arenaToolbar.add(Box.createVerticalStrut(5));
 
-
+		/**
+		 * setting all the components in the racer toolbar panel
+		 */
 		racerToolbar.setLayout(new BoxLayout(racerToolbar, BoxLayout.Y_AXIS));
 		racerToolbar.add(Box.createVerticalStrut(5));
 		lblChooseRacer.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -267,14 +295,12 @@ public class Mainframe extends JFrame {
 		racerToolbar.add(Box.createVerticalStrut(5));
 		lblMaxSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
 		racerToolbar.add(lblMaxSpeed);
-		txtMaxSpeed.setText("120");
 		txtMaxSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
 		txtMaxSpeed.setMaximumSize(new Dimension(100, 25));
 		racerToolbar.add(txtMaxSpeed);
 		racerToolbar.add(Box.createVerticalStrut(5));
 		lblAcceleration.setAlignmentX(Component.CENTER_ALIGNMENT);
 		racerToolbar.add(lblAcceleration);
-		txtAcceleration.setText("8");
 		txtAcceleration.setAlignmentX(Component.CENTER_ALIGNMENT);
 		txtAcceleration.setMaximumSize(new Dimension(100, 25));
 		racerToolbar.add(txtAcceleration);
@@ -283,6 +309,9 @@ public class Mainframe extends JFrame {
 		racerToolbar.add(btnAddRacer);
 		racerToolbar.add(Box.createVerticalStrut(5));
 
+		/**
+		 * setting the buttons in the start race toolbar panel
+		 */
 		Start_InfoToolbar.setLayout(new BoxLayout(Start_InfoToolbar, BoxLayout.Y_AXIS));
 		Start_InfoToolbar.add(Box.createVerticalStrut(5));
 		btnStart.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -310,33 +339,27 @@ public class Mainframe extends JFrame {
 				);
 		toolbar.setLayout(gl_toolbar);
 
+		/**
+		 * setting the frame size and visibility
+		 */
 		setSize(1024,700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 
 
 	}
+	/**
+	 * the button action function that adds the arena and throws exceptions if needed
+	 * @param e,the action the button got
+	 */
 	public void arenaButtonActionPreformed(ActionEvent e) {
 
 		String action = e.getActionCommand();
 		if (action.equals("click")) {
-			intiArenaFromGui();
-			if(length<100 ||length>3000|| maxRacers>20 || maxRacers<1 ) {
-				internalErrorFrame("Invalid input values! Please try again.");
-			}
-			else {
-				try {
-					arena = builder.buildArena(arenaFullName,length, maxRacers);
-				} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
-						| IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
-					System.out.println("Unable to build arena!");
-				}
-				try {
-					image = ImageIO.read(getClass().getResource("icons/arena/"+arenaChoose+".jpg"));
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+			try {
+				intiArenaFromGui();
+				arena = builder.buildArena(arenaFullName,length, maxRacers);
+				image = ImageIO.read(Mainframe.class.getResource("icons/arena/"+arenaChoose+".jpg"));
 				int newRacePanelWidth =length;
 				int newRacePanelHight = (int) (87.5*maxRacers);
 				int newFrameWidth= newRacePanelWidth+racerToolbar.getWidth();
@@ -347,14 +370,20 @@ public class Mainframe extends JFrame {
 					setSize(newFrameWidth, newFrameHeight);
 				}
 				Race_Panel.changeImage(image);
-
-
-
+			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
+					| IllegalAccessException | IllegalArgumentException | InvocationTargetException | IOException e1) {
+				JOptionPane.showMessageDialog(null,"Please enter Values");
 			}
-		}
 
+
+		}
 	}
-	public void intiArenaFromGui() {
+
+
+	/**
+	 * function for initializing the parameters for the arena build
+	 */
+	public void intiArenaFromGui() throws NumberFormatException{
 		Race_Panel.removeAll();
 		if(arena !=null) {
 			arena.setActiveRacers(new ArrayList<Racer>());
@@ -372,40 +401,11 @@ public class Mainframe extends JFrame {
 			}
 		}
 	}
-	public void internalErrorFrame(String messege) {
-		frame =new JInternalFrame("Message",false,true,false,false);
-		Race_Panel.add(frame);
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-		JButton okButton = new JButton("OK");
-		JLabel error = new JLabel(messege);
-		frame.getContentPane().add(Box.createVerticalStrut(20));
-		error.setAlignmentX(Component.CENTER_ALIGNMENT);
-		frame.getContentPane().add(error);
-		frame.getContentPane().add(Box.createVerticalStrut(40));
 
-		okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		frame.getContentPane().add(okButton);
-
-		frame.setBounds(290, 189, 313, 165);
-		frame.setVisible(true);
-
-		okButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					frame.setClosed(true);
-					Race_Panel.remove(frame);
-				} catch (PropertyVetoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		});
-
-
-	}
+	/**
+	 * action listener for adding a racer to the race
+	 * @param e, the action performed
+	 */
 	public void racerButtonActionPreformed(ActionEvent e) {
 
 		String action = e.getActionCommand();
@@ -418,7 +418,7 @@ public class Mainframe extends JFrame {
 
 			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
 					| IllegalAccessException | IllegalArgumentException | InvocationTargetException | RacerLimitException | RacerTypeException |StringIndexOutOfBoundsException  e1) {
-				internalErrorFrame(e1.getMessage());
+				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 
 			revalidate();
@@ -430,6 +430,16 @@ public class Mainframe extends JFrame {
 		}
 
 	}
+	/**
+	 * function that builds the racer objects and adds them to the neede array lists, if a problem occurs throws exception
+	 * @throws ClassNotFoundException
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws RacerLimitException
+	 * @throws RacerTypeException
+	 */
 	public void addRacerAndPaint() throws ClassNotFoundException, NoSuchMethodException, InstantiationException,
 	IllegalAccessException, InvocationTargetException, RacerLimitException, RacerTypeException {
 		buildRacer = builder.buildRacer(racerFullName, racerName, maxSpeed, acceleration, color);
@@ -444,6 +454,11 @@ public class Mainframe extends JFrame {
 		Race_Panel.add(racersPics.get(racers.indexOf(buildRacer)));
 		yPlacement++;
 	}
+	/**
+	 * gets the racer data from the gui and handles it, throws exception if a problem occurs
+	 * @throws StringIndexOutOfBoundsException
+	 * @throws RacerLimitException
+	 */
 	public void initRacerFromGui() throws StringIndexOutOfBoundsException,RacerLimitException {
 		if(arena ==null) {
 			throw new StringIndexOutOfBoundsException("There is no arena!!!!");
@@ -473,6 +488,13 @@ public class Mainframe extends JFrame {
 
 
 	}
+	/**
+	 * building the racer icon for the gui
+	 * @param srcImg
+	 * @param w
+	 * @param h
+	 * @return
+	 */
 	private Image getScaledImage(Image srcImg, int w, int h){
 		BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = resizedImg.createGraphics();
@@ -483,6 +505,11 @@ public class Mainframe extends JFrame {
 
 		return resizedImg;
 	}
+	/**
+	 * action performed for the start button
+	 * @param event
+	 * @throws StringIndexOutOfBoundsException
+	 */
 	private void startButtonActionPerformed(ActionEvent event) throws StringIndexOutOfBoundsException {
 		if(arena ==null) {
 			throw new StringIndexOutOfBoundsException("There is no arena");
@@ -502,19 +529,22 @@ public class Mainframe extends JFrame {
 				arena.startRace();
 				while(!single.isShutdown()) 	{
 					racerMove();
-				
-				try {
-					Thread.sleep(30);
-				} catch(InterruptedException e) {
-					Thread.currentThread().notify();
-				}
+
+					try {
+						Thread.sleep(30);
+					} catch(InterruptedException e) {
+						Thread.currentThread().notify();
+					}
 				}
 				single.shutdown();
 			}
 		});
-		
+
 
 	}
+	/**
+	 * function that moves the racer icon in the gui
+	 */
 	public synchronized void racerMove() {
 		for(Racer racer : racers) {
 			if(racersPics.get(racers.indexOf(racer)).getLocation().getX()<(arena.getLength()-100)) {
@@ -525,7 +555,7 @@ public class Mainframe extends JFrame {
 			}
 			revalidate();
 			repaint();
-			
+
 
 		}
 	}

@@ -133,7 +133,7 @@ public abstract class Arena implements Observer {
 	/**
 	 * @return the activeRacers
 	 */
-	public ArrayList<Racer> getActiveRacers() {
+	public synchronized ArrayList<Racer> getActiveRacers() {
 		return activeRacers;
 	}
 
@@ -147,7 +147,7 @@ public abstract class Arena implements Observer {
 	/**
 	 * @return the completedRacers
 	 */
-	public ArrayList<Racer> getCompletedRacers() {
+	public synchronized ArrayList<Racer> getCompletedRacers() {
 		return completedRacers;
 	}
 
@@ -182,7 +182,7 @@ public abstract class Arena implements Observer {
 	/**
 	 * @return the disabledRacers
 	 */
-	public ArrayList<Racer> getDisabledRacers() {
+	public synchronized ArrayList<Racer> getDisabledRacers() {
 		return disabledRacers;
 	}
 
@@ -196,7 +196,7 @@ public abstract class Arena implements Observer {
 	/**
 	 * @return the brokenRacers
 	 */
-	public ArrayList<Racer> getBrokenRacers() {
+	public synchronized ArrayList<Racer> getBrokenRacers() {
 		return brokenRacers;
 	}
 

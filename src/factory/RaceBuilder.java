@@ -7,6 +7,13 @@ import game.arenas.Arena;
 import game.racers.Racer;
 import utilities.EnumContainer.Color;
 
+/**
+ * 
+ * @author Alex Weizman 314342064, 
+ * @author Shmuel moha 204568323
+ *
+ */
+
 public class RaceBuilder implements Runnable {
 
 	private static RaceBuilder instance;

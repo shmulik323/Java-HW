@@ -302,7 +302,7 @@ public abstract class Racer extends Observable implements Runnable{
 	@Override
 	public synchronized void run() {
 		this.getArena();
-		while(!arena.getCompletedRacers().contains(this)) {
+		while(!arena.getCompletedRacers().contains(this) || !arena.getDisabledRacers().contains(this)) {
 		this.move(Arena.getFRICTION());
 		try {
 			Thread.sleep(100);
