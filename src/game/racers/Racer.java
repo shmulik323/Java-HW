@@ -1,7 +1,5 @@
 package game.racers;
 
-import java.util.Observable;
-
 import game.arenas.Arena;
 import utilities.EnumContainer.Color;
 import utilities.EnumContainer.RacerEvent;

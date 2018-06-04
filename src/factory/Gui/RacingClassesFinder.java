@@ -35,10 +35,8 @@ public class RacingClassesFinder {
 		try {
 			this.classList = this.loadClasses(new File(GAME_PACKAGE_DIR), GAME_PACKAGE);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.arenasList = loadArenas();
