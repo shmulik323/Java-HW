@@ -10,7 +10,8 @@ import java.util.Observable;
  * @author alex weizman 314342064
  *
  */
-public abstract class IRacer extends Observable {
+public abstract class IRacer extends Observable  {
 	public IRacer(){}
 	public abstract void addAttribute(String name,Object obj);
+
 }

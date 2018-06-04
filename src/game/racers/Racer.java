@@ -1,6 +1,9 @@
 package game.racers;
 
+import java.util.Hashtable;
+
 import game.arenas.Arena;
+import game.racers.decorator.RacerClone;
 import utilities.EnumContainer.Color;
 import utilities.EnumContainer.RacerEvent;
 import utilities.Fate;
@@ -11,7 +14,7 @@ import utilities.Point;
  * @author alex weizman 314342064
  *
  */
-public abstract class Racer extends IRacer implements Runnable{
+public abstract class Racer extends IRacer implements Runnable,RacerClone,Comparable<Racer>{
 	private Arena arena;
 	private String name;
 	private Point currentLocation= new Point();
@@ -24,7 +27,7 @@ public abstract class Racer extends IRacer implements Runnable{
 	protected static int SerialId=0;
 	private int SerialNumber;
 	private Mishap mishap ;
-	
+	private Hashtable<String, Object> properties;
 
 	public Racer(String name, double maxSpeed, double acceleration, Color color) {
 		this.name=name;
@@ -32,11 +35,46 @@ public abstract class Racer extends IRacer implements Runnable{
 		this.acceleration=acceleration;
 		this.color=color;
 		this.SerialNumber=++Racer.SerialId;
+		this.properties=new Hashtable<>();
+		this.properties.put("name", this.name);
+		this.properties.put("maxSpeed", this.maxSpeed);
+		this.properties.put("acceleration", this.acceleration);
+		this.properties.put("color", this.color);
+		this.properties.put("SerialNumber", this.SerialNumber);
+		
 	}
 	@Override
 	public void addAttribute(String name, Object obj) {
 		// TODO Auto-generated method stub
 		
+	}
+	/* (non-Javadoc)
+	 * @see game.racers.decorator.RacerClone#clone()
+	 */
+	@Override
+	public Racer clone() {
+        //calls Villain clone
+        Racer racer=null;
+        try {
+            racer=(Racer) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return racer;
+	}
+	@Override
+    public int compareTo(Racer compareracer) {
+        double compareage=((Racer)compareracer).getCurrentLocation().getX();
+        /* For Ascending order*/
+        return (int)(this.currentLocation.getX()-compareage);
+    }
+
+	/* (non-Javadoc)
+	 * @see game.racers.decorator.RacerClone#getHashCode()
+	 */
+	@Override
+	public int getHashCode() {
+		return System.identityHashCode(this);
 	}
 
 	/**
@@ -322,6 +360,18 @@ public abstract class Racer extends IRacer implements Runnable{
 		if (this.mishap != null && this.mishap.getTurnsToFix() == 0)
 			this.mishap = null;
 		return this.mishap != null;
+	}
+	/**
+	 * @return the properties
+	 */
+	public Hashtable<String, Object> getProperties() {
+		return properties;
+	}
+	/**
+	 * @param properties the properties to set
+	 */
+	public void setProperties(Hashtable<String, Object> properties) {
+		this.properties = properties;
 	}
 
 

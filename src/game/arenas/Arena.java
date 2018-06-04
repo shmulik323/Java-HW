@@ -51,14 +51,14 @@ public abstract class Arena implements Observer {
 	 * checks if race has active racers
 	 * @return boolean value
 	 */
-	public boolean hasActiveRacers() {
+	public synchronized boolean hasActiveRacers() {
 		if(this.activeRacers.size()>0) {
 			return true;
 		}
 		return false;
 	}
 
-	public void startRace() {
+	public synchronized void startRace() {
 		ExecutorService ex=Executors.newFixedThreadPool(this.activeRacers.size());
 		for(Racer racer:this.activeRacers) {
 			ex.execute(racer);

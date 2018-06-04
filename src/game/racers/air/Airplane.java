@@ -19,9 +19,14 @@ public class Airplane extends Racer implements AerialRacer{
 		super(name, maxSpeed, acceleration, color);
 		this.wheeled=new Wheeled(numOfWheels);
 	}
+	public Airplane(String name, double maxSpeed, double acceleration, Color color,int numOfWheels) {
+		super(name, maxSpeed, acceleration, color);
+		this.wheeled=new Wheeled(numOfWheels);
+	}
 
 	public Airplane() {
 		super("Airplane #"+Integer.toString(Racer.getSerialId()+1), maxSpeed, acceleration, color);
+		this.wheeled=new Wheeled(numOfWheels);
 	}
 	
 	/* (non-Javadoc)
@@ -37,6 +42,7 @@ public class Airplane extends Racer implements AerialRacer{
 	public void run() {
 		super.run();
 	}
+
 
 
 }

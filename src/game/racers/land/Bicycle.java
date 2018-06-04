@@ -36,6 +36,11 @@ public class Bicycle extends Racer implements LandRacer {
 		this.wheeled=new Wheeled(numOfWheels);
 		
 	}
+	public Bicycle(String name, double maxSpeed, double acceleration, Color color,int numOfWheels) {
+		super(name, maxSpeed, acceleration, color);
+		this.wheeled=new Wheeled(numOfWheels);
+		
+	}
 
 	/**
 	  * {@link Constructor} Default

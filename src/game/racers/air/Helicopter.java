@@ -20,6 +20,7 @@ public class Helicopter extends Racer implements AerialRacer{
 		super(name, maxSpeed, acceleration, color);
 	}
 	
+	
 	/* (non-Javadoc)
 	 * @see game.racers.Racer#describeSpecific()
 	 */

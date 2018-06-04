@@ -526,7 +526,7 @@ public class Mainframe extends JFrame {
 			@Override
 			public synchronized void run() {
 				arena.startRace();
-				while(!single.isShutdown()) 	{
+				while(!arena.getActiveRacers().isEmpty()) 	{
 					racerMove();
 
 					try {
@@ -552,8 +552,9 @@ public class Mainframe extends JFrame {
 			else {
 				racersPics.get(racers.indexOf(racer)).setLocation((int)arena.getLength()-100,(int)racer.getCurrentLocation().getY());
 			}
-			revalidate();
-			repaint();
+			racersPics.get(racers.indexOf(racer)).revalidate();
+			racersPics.get(racers.indexOf(racer)).repaint();
+			System.out.println(racer.getProperties());
 
 
 		}
