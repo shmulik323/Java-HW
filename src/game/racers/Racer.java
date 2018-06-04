@@ -13,7 +13,7 @@ import utilities.Point;
  * @author alex weizman 314342064
  *
  */
-public abstract class Racer extends Observable implements Runnable{
+public abstract class Racer extends IRacer implements Runnable{
 	private Arena arena;
 	private String name;
 	private Point currentLocation= new Point();
@@ -26,6 +26,7 @@ public abstract class Racer extends Observable implements Runnable{
 	protected static int SerialId=0;
 	private int SerialNumber;
 	private Mishap mishap ;
+	
 
 	public Racer(String name, double maxSpeed, double acceleration, Color color) {
 		this.name=name;
@@ -34,6 +35,12 @@ public abstract class Racer extends Observable implements Runnable{
 		this.color=color;
 		this.SerialNumber=++Racer.SerialId;
 	}
+	@Override
+	public void addAttribute(String name, Object obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * initializes the race
 	 * @param arena
