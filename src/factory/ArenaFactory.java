@@ -9,11 +9,11 @@ public class ArenaFactory {
 	
     public Arena getArena(String arenaType){
         switch (arenaType){
-            case "air":
+            case "AerialArena":
                 return new AerialArena();   //creates new AerialArena
-            case "land":
+            case "LandArena":
                 return new LandArena();    //creates new LandArena
-            case "naval":
+            case "NavalArena":
                 return new NavalArena();  //creates new NavalArena
             default:
                 return null;
