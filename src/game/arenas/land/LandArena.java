@@ -75,10 +75,5 @@ public class LandArena extends Arena {
 		LandArena.length = length;
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		super.update(o, arg);
-		
-	}
 	
 }

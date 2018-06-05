@@ -17,20 +17,13 @@ import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -38,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import factory.RaceBuilder;
 import game.arenas.Arena;
 import game.racers.Racer;
+import utilities.Point;
 import utilities.EnumContainer.Color;
 
 /**
@@ -54,7 +48,6 @@ public class Mainframe extends JFrame implements Observer {
 	private static RaceBuilder builder = RaceBuilder.getInstance();
 	private static ArrayList<Racer> racers=new ArrayList<Racer>();
 	private int yPlacement=0;
-	private String arenaChoose;
 	private boolean onGoingRaceFlag = false;
 	private JTable infoTable;
 	private String tableColumns[]= {"Racer Name","Current Speed","Max Speed","Current X Location","Finished"};
@@ -256,6 +249,16 @@ public class Mainframe extends JFrame implements Observer {
 
 
 	}
+	public void addPicToRace(Racer racer,JLabel label,String racerChoose,Color color) {
+		ImageIcon imageIcon = new ImageIcon(Mainframe.class.getResource("/factory/Gui/icons/"+racerChoose+color.toString()+".png"));
+		imageIcon=new ImageIcon(getScaledImage(imageIcon.getImage(),70,70));
+		getRacersPics().get(getRacers().indexOf(racer)).setIcon(imageIcon);
+		racer.setCurrentLocation(new Point(0,yPlacement*(Arena.getMinYGap())));
+		getRacersPics().get(getRacers().indexOf(racer)).setBounds(0,getyPlacement()*(Arena.getMinYGap()), 70, 70);
+		Race_Panel.add(getRacersPics().get(getRacers().indexOf(racer)));
+		setyPlacement(getyPlacement() + 1);
+		getRacersPics().get(getRacers().indexOf(racer)).repaint();
+	}
 	/**
 	 * function that moves the racer icon in the gui
 	 */
@@ -270,14 +273,30 @@ public class Mainframe extends JFrame implements Observer {
 			getRacersPics().get(getRacers().indexOf(racer)).revalidate();
 			getRacersPics().get(getRacers().indexOf(racer)).repaint();
 			System.out.println(racer.getProperties());
-
-
 		}
 	}
 	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+	public synchronized void update(Observable o, Object arg){
+		String string = arg.toString();
+		switch (string) {
+		case "FINISHED":
+			arena.getCompletedRacers().add((Racer) o);
+			arena.getActiveRacers().remove((Racer)o);	
+			break;
+		case "BROKENDOWN":
+			arena.getBrokenRacers().add((Racer) o);
+			break;
+		case "DISABLED":
+			arena.getDisabledRacers().add((Racer)o);
+			arena.getActiveRacers().remove((Racer)o);	
+			break;
+		case "REPAIRED":
+			arena.getBrokenRacers().add((Racer) o);
+			break;
+		default:
+			break;
+		}
+
 	}
 	/**
 	 * @return the racers

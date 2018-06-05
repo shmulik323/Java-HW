@@ -15,4 +15,5 @@ public interface RacerClone extends Cloneable {
 
     // for testing purposes , we want to know the hashcode
     public int getHashCode();
+
 }

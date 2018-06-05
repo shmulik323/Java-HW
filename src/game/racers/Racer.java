@@ -53,10 +53,11 @@ public abstract class Racer extends IRacer implements Runnable,RacerClone,Compar
 	 */
 	@Override
 	public Racer clone() {
-        //calls Villain clone
         Racer racer=null;
         try {
+        	Racer.setSerialId(getSerialId()+1);
             racer=(Racer) super.clone();
+            racer.SerialNumber=Racer.getSerialId();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }

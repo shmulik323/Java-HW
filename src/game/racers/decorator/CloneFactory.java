@@ -9,24 +9,11 @@ import game.racers.Racer;
  * @author shmul
  *
  */
-public class CloneFactory implements RacerClone {
+public class CloneFactory{
 
-	/* (non-Javadoc)
-	 * @see game.racers.decorator.RacerClone#clone()
-	 */
-	@Override
-	public Racer clone() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Racer getRacer(Racer racer){
+        return racer.clone();
+    }
 
-	/* (non-Javadoc)
-	 * @see game.racers.decorator.RacerClone#getHashCode()
-	 */
-	@Override
-	public int getHashCode() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 }

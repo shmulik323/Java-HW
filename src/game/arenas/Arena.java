@@ -15,7 +15,7 @@ import utilities.Point;
  * @author alex weizman 314342064
  *
  */
-public abstract class Arena implements Observer {
+public abstract class Arena {
 	private static double length;
 	private final static int MIN_Y_GAP=80;
 	private static double FRICTION;
@@ -43,7 +43,6 @@ public abstract class Arena implements Observer {
 			Point f = new Point(Arena.length, y);
 			racer.initRace(this, s, f);
 			y += Arena.MIN_Y_GAP;
-			racer.addObserver(this);
 		}
 	}
 
@@ -78,28 +77,7 @@ public abstract class Arena implements Observer {
 		}
 
 	}
-	public synchronized void update(Observable o, Object arg){
-		String string = arg.toString();
-		switch (string) {
-		case "FINISHED":
-			this.completedRacers.add((Racer) o);
-			this.activeRacers.remove((Racer)o);	
-			break;
-		case "BROKENDOWN":
-			this.brokenRacers.add((Racer) o);
-			break;
-		case "DISABLED":
-			this.disabledRacers.add((Racer)o);
-			this.activeRacers.remove((Racer) o);
-			break;
-		case "REPAIRED":
-			this.brokenRacers.remove((Racer) o);
-			break;
-		default:
-			break;
-		}
 
-	}
 
 	/**
 	 * @return the FRICTION

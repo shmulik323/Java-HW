@@ -86,10 +86,5 @@ public class NavalArena extends Arena{
 		NavalArena.body = body;
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		super.update(o, arg);
-		
-	}
 
 }

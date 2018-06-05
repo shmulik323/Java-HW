@@ -89,8 +89,5 @@ public class AerialArena extends Arena{
 		wind=w;
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		super.update(o, arg);
-	}
+
 }
