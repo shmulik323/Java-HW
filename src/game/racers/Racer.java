@@ -1,7 +1,9 @@
 package game.racers;
 
 import java.util.Hashtable;
+import java.util.Observer;
 
+import factory.Gui.Mainframe;
 import game.arenas.Arena;
 import game.racers.decorator.RacerClone;
 import utilities.EnumContainer.Color;
@@ -41,34 +43,33 @@ public abstract class Racer extends IRacer implements Runnable,RacerClone,Compar
 		this.properties.put("acceleration", this.acceleration);
 		this.properties.put("color", this.color);
 		this.properties.put("SerialNumber", this.SerialNumber);
-		
 	}
 	@Override
 	public void addAttribute(String name, Object obj) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/* (non-Javadoc)
 	 * @see game.racers.decorator.RacerClone#clone()
 	 */
 	@Override
 	public Racer clone() {
-        Racer racer=null;
-        try {
-        	Racer.setSerialId(getSerialId()+1);
-            racer=(Racer) super.clone();
-            racer.SerialNumber=Racer.getSerialId();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return racer;
+		Racer racer=null;
+		try {
+			Racer.setSerialId(getSerialId()+1);
+			racer=(Racer) super.clone();
+			racer.SerialNumber=Racer.getSerialId();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return racer;
 	}
 	@Override
-    public int compareTo(Racer compareracer) {
-        double compareage=((Racer)compareracer).getCurrentLocation().getX();
-        /* For Ascending order*/
-        return (int)(this.currentLocation.getX()-compareage);
-    }
+	public int compareTo(Racer compareracer) {
+		double compareage=((Racer)compareracer).getCurrentLocation().getX();
+		/* For Ascending order*/
+		return (int)(compareage-this.currentLocation.getX());
+	}
 
 	/* (non-Javadoc)
 	 * @see game.racers.decorator.RacerClone#getHashCode()
@@ -97,45 +98,48 @@ public abstract class Racer extends IRacer implements Runnable,RacerClone,Compar
 	public synchronized Point move(double friction) {
 		double reductionFactor = 1;
 		if(!this.arena.getDisabledRacers().contains(this)) {
-		if (!(this.hasMishap()) && Fate.breakDown(failurePropability)) {
-			this.mishap=Fate.generateMishap();
-			this.setChanged();
-			this.notifyObservers(RacerEvent.BROKENDOWN);
-		}
-
-		if (this.hasMishap()) {
-			reductionFactor = mishap.getReductionFactor();
-			if(this.mishap.isFixable()) {
-				this.mishap.nextTurn();
-			}
-			else {
+			if (!(this.hasMishap()) && Fate.breakDown(failurePropability)) {
+				this.mishap=Fate.generateMishap();
 				this.setChanged();
-				this.notifyObservers(RacerEvent.DISABLED);
+				this.notifyObservers(RacerEvent.BROKENDOWN);
 			}
-			if(this.mishap.getTurnsToFix()==0) {
-				this.setChanged();
-				this.notifyObservers(RacerEvent.REPAIRED);
-			}
-		}
 
-		if (this.currentSpeed < this.maxSpeed) {
-			this.currentSpeed += this.acceleration * friction * reductionFactor;
+			if (this.hasMishap()) {
+				reductionFactor = mishap.getReductionFactor();
+				if(this.mishap.isFixable()) {
+					this.mishap.nextTurn();
+				}
+				else {
+					this.setChanged();
+					this.notifyObservers(RacerEvent.DISABLED);
+				}
+				if(this.mishap.getTurnsToFix()==0) {
+					this.setChanged();
+					this.notifyObservers(RacerEvent.REPAIRED);
+				}
+			}
+
+			if (this.currentSpeed < this.maxSpeed) {
+				this.currentSpeed += this.acceleration * friction * reductionFactor;
+			}
+			if (this.currentSpeed > this.maxSpeed) {
+				this.currentSpeed = this.maxSpeed;
+			}
+			this.currentLocation.setX(this.currentLocation.getX()+this.currentSpeed);
+
+			if(this.currentLocation.getX()>=this.arena.getLength()) {
+				this.currentLocation.setX(arena.getLength());
+				this.setChanged();
+				this.notifyObservers(RacerEvent.FINISHED);
+				return this.currentLocation;
+
+			}
+
 		}
-		if (this.currentSpeed > this.maxSpeed) {
-			this.currentSpeed = this.maxSpeed;
-		}
-		
-		this.currentLocation.setX(this.currentLocation.getX()+this.currentSpeed);
-		}
-		if(this.currentLocation.getX()>=this.arena.getLength()) {
-			this.currentLocation.setX(arena.getLength());
-			this.setChanged();
-			this.notifyObservers(RacerEvent.FINISHED);
-			
-		}
+		this.setChanged();
+		this.notifyObservers(RacerEvent.Moved);	
 		return this.currentLocation;
 	}
-
 	public String describeRacer() {
 
 		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+" maxSpeed: "+this.getMaxSpeed()+","+
@@ -343,19 +347,18 @@ public abstract class Racer extends IRacer implements Runnable,RacerClone,Compar
 		if(this.arena.getCompletedRacers().contains(this)) {return true;}
 		return false;
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	public synchronized void run() {
-		this.getArena();
-		while(!arena.getCompletedRacers().contains(this) || !arena.getDisabledRacers().contains(this)) {
-		this.move(Arena.getFRICTION());
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			Thread.currentThread().notify();
+		while(!arena.getCompletedRacers().contains(this) && !arena.getDisabledRacers().contains(this)) {
+			this.move(Arena.getFRICTION());
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				Thread.currentThread().notify();
+			}
 		}
-		}
-
 	}
 	private boolean hasMishap() {
 		if (this.mishap != null && this.mishap.getTurnsToFix() == 0)
@@ -373,6 +376,9 @@ public abstract class Racer extends IRacer implements Runnable,RacerClone,Compar
 	 */
 	public void setProperties(Hashtable<String, Object> properties) {
 		this.properties = properties;
+	}
+	public String showRacer() {
+		return "name:"+this.getName()+","+" SerialNumber: "+this.SerialNumber+","+"Color: "+this.color;
 	}
 
 

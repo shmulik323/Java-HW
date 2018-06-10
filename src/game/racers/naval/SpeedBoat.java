@@ -11,7 +11,7 @@ public class SpeedBoat extends Racer implements NavalRacer {
 
 	private static double  maxSpeed =170;
 	private static double acceleration=10;
-	private static Color color =Color.Red;
+	private static Color color =Color.RED;
 	
 	public SpeedBoat(String name, double maxSpeed, double acceleration, Color color) {
 		super(name, maxSpeed, acceleration, color);

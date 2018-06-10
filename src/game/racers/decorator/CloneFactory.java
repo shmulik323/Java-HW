@@ -12,7 +12,8 @@ import game.racers.Racer;
 public class CloneFactory{
 
     public Racer getRacer(Racer racer){
-        return racer.clone();
+        Racer clone = racer.clone();
+		return clone;
     }
 
 

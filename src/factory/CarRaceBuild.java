@@ -26,7 +26,7 @@ public class CarRaceBuild implements CarRaceBuildPlan {
 				JLabel icon=new JLabel();
 				Racer racer = cloneFactory.getRacer(car);
 				arena.addRacer(racer);
-				mainFrame.addPicToRace(racer, icon, racerType, racer.getColor());
+				mainFrame.addPicToRace(racer, icon, racerType, racer.getColor().toString());
 			} catch (RacerLimitException | RacerTypeException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

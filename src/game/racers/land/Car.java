@@ -15,7 +15,7 @@ public class Car extends Racer implements LandRacer {
 	private static int numOfWheels=4;
 	private static double  maxSpeed =400;
 	private static double acceleration=20;
-	private static Color color =Color.Red;
+	private static Color color =Color.RED;
 	private Engine engine =Engine.BOXER;
 	private Wheeled wheeled;
 
@@ -63,10 +63,7 @@ public class Car extends Racer implements LandRacer {
 	 * @return the serialNumber
 	 */
 
-	@Override
-	public void run() {
-		super.run();
-	}
+
 
 
 

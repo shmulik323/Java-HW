@@ -61,10 +61,8 @@ public abstract class Arena {
 		ExecutorService ex=Executors.newFixedThreadPool(this.activeRacers.size());
 		for(Racer racer:this.activeRacers) {
 			ex.execute(racer);
-			if(this.completedRacers.contains(racer)) {
-				ex.shutdown();
-			}
 		}
+		ex.shutdown();
 
 	}
 

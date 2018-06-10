@@ -20,7 +20,7 @@ public class Bicycle extends Racer implements LandRacer {
 	private static int numOfWheels=2;
 	private static double  maxSpeed =270;
 	private static double acceleration=10;
-	private static Color color =Color.Green;
+	private static Color color =Color.GREEN;
 	private Wheeled wheeled;
 	/**
 	 * 

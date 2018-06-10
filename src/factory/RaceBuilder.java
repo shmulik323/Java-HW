@@ -51,6 +51,14 @@ public class RaceBuilder implements Runnable {
 				utilities.EnumContainer.Color.class);
 		return (Racer) this.constructor.newInstance(name, maxSpeed, acceleration, color);
 	}
+	public Racer buildRacer(String racerType)
+					throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
+					IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		this.classObject = classLoader.loadClass(racerType);
+		this.constructor = classObject.getConstructor();
+		return (Racer) this.constructor.newInstance();
+	}
+
 
 	public Racer buildWheeledRacer(String racerType, String name, double maxSpeed, double acceleration, Color color,
 			int numOfWheels) throws ClassNotFoundException, NoSuchMethodException, SecurityException,

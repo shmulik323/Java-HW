@@ -13,7 +13,7 @@ public class RowBoat extends Racer implements NavalRacer{
 	
 	private static double  maxSpeed =75;
 	private static double acceleration=10;
-	private static Color color =Color.Red;
+	private static Color color =Color.RED;
 	private Team team=Team.DOUBLE;
 	private Type type =Type.SKULLING;
 	

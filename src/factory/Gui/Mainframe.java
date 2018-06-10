@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
@@ -50,7 +51,7 @@ public class Mainframe extends JFrame implements Observer {
 	private int yPlacement=0;
 	private boolean onGoingRaceFlag = false;
 	private JTable infoTable;
-	private String tableColumns[]= {"Racer Name","Current Speed","Max Speed","Current X Location","Finished"};
+	private String tableColumns[]= {"Place","Racer Name","Current Speed","Max Speed","Current X Location","Finished"};
 	private Object tableData[][];
 	private ArrayList<JLabel> racersPics=new ArrayList<JLabel>();
 
@@ -109,6 +110,7 @@ public class Mainframe extends JFrame implements Observer {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Collections.sort(getRacers());
 				finish="No";
 				infoTable=new JTable(tableData,tableColumns);
 				DefaultTableModel dtm=new DefaultTableModel(0,0);	
@@ -120,7 +122,7 @@ public class Mainframe extends JFrame implements Observer {
 						finish="Yes";
 					else if(getArena().getDisabledRacers().contains(racer))
 						finish="Disabled";
-					dtm.addRow(new Object[] {racer.getName(),new Double(racer.getCurrentSpeed()), 
+					dtm.addRow(new Object[] {getRacers().indexOf(racer),racer.getName(),new Double(racer.getCurrentSpeed()), 
 							racer.getMaxSpeed(),racer.getCurrentLocation().getX(),finish } );
 					finish="No";
 				}
@@ -129,12 +131,13 @@ public class Mainframe extends JFrame implements Observer {
 					@Override
 					public void tableChanged(TableModelEvent e) {
 						dtm.addRow(tableColumns);
+						Collections.sort(getRacers());
 						for(Racer racer: getRacers()) {
 							if(getArena().getCompletedRacers().contains(racer))
 								finish="Yes";
 							else if(getArena().getDisabledRacers().contains(racer))
 								finish="Disabled";
-							dtm.addRow(new Object[] {racer.getName(),new Double(racer.getCurrentSpeed()), 
+							dtm.addRow(new Object[] {getRacers().indexOf(racer),racer.getName(),new Double(racer.getCurrentSpeed()), 
 									racer.getMaxSpeed(),racer.getCurrentLocation().getX(),finish } );
 							finish="No";
 						}
@@ -174,7 +177,7 @@ public class Mainframe extends JFrame implements Observer {
 			}
 			BuildArenaDialog dialog = new BuildArenaDialog(this,this.Race_Panel);
 			dialog.setVisible(true);
-			
+
 		}
 	}
 	/**
@@ -186,8 +189,8 @@ public class Mainframe extends JFrame implements Observer {
 		String action = e.getActionCommand();
 		if (action.equals("click")) {
 			if(onGoingRaceFlag==false) {
-			AddRacerDialog dialog = new AddRacerDialog(this,this.Race_Panel,this.getArena());
-			dialog.setVisible(true);
+				AddRacerDialog dialog = new AddRacerDialog(this,this.Race_Panel,this.getArena());
+				dialog.setVisible(true);
 			}
 			else {
 				JOptionPane.showMessageDialog(null,"there is a race in action!!");
@@ -227,44 +230,44 @@ public class Mainframe extends JFrame implements Observer {
 		if(getArena().getActiveRacers().isEmpty()) {
 			throw new StringIndexOutOfBoundsException("There is no racers in the arena");
 		}
-		ExecutorService single = Executors.newSingleThreadExecutor();
 		getArena().initRace();
 		setOnGoingRaceFlag(true);
-		single.submit(new Runnable() {
-			@Override
-			public synchronized void run() {
-				getArena().startRace();
-				while(!getArena().getActiveRacers().isEmpty()) 	{
-					racerMove();
-
-					try {
-						Thread.sleep(30);
-					} catch(InterruptedException e) {
-						Thread.currentThread().notify();
-					}
-				}
-				single.shutdown();
-			}
-		});
-
+		getArena().startRace();
 
 	}
-	public void addPicToRace(Racer racer,JLabel label,String racerChoose,Color color) {
-		ImageIcon imageIcon = new ImageIcon(Mainframe.class.getResource("/factory/Gui/icons/"+racerChoose+color.toString()+".png"));
+	public void addPicToRace(Racer racer,JLabel label,String racerChoose,String color) {
+		getRacersPics().add(label);
+		ImageIcon imageIcon = new ImageIcon(Mainframe.class.getResource("/factory/Gui/icons/"+racerChoose+returnColor(color)+".png"));
 		imageIcon=new ImageIcon(getScaledImage(imageIcon.getImage(),70,70));
-		getRacersPics().get(getRacers().indexOf(racer)).setIcon(imageIcon);
+		getRacersPics().get(arena.getActiveRacers().indexOf(racer)).setIcon(imageIcon);
 		racer.setCurrentLocation(new Point(0,yPlacement*(Arena.getMinYGap())));
-		getRacersPics().get(getRacers().indexOf(racer)).setBounds(0,getyPlacement()*(Arena.getMinYGap()), 70, 70);
-		Race_Panel.add(getRacersPics().get(getRacers().indexOf(racer)));
+		getRacersPics().get(arena.getActiveRacers().indexOf(racer)).setBounds(0,getyPlacement()*(Arena.getMinYGap()), 70, 70);
+		Race_Panel.add(getRacersPics().get(arena.getActiveRacers().indexOf(racer)));
 		setyPlacement(getyPlacement() + 1);
-		getRacersPics().get(getRacers().indexOf(racer)).repaint();
+		getRacersPics().get(arena.getActiveRacers().indexOf(racer)).repaint();
+	}
+	/**
+	 * @param color
+	 * @return
+	 */
+	public String returnColor(String color) {
+		if(color=="RED")
+			return "Red";
+		else if(color=="BLUE")
+			return "Blue";
+		else if(color=="YELLOW")
+			return "Yellow";
+		else if(color=="BLACK")
+			return "Black";
+		else
+			return "Green";
 	}
 	/**
 	 * function that moves the racer icon in the gui
 	 */
 	public synchronized void racerMove() {
-		for(Racer racer : getRacers()) {
-			if(getRacersPics().get(getRacers().indexOf(racer)).getLocation().getX()<(getArena().getLength()-80)) {
+		for(Racer racer : arena.getActiveRacers()) {
+			if(getRacersPics().get(getRacers().indexOf(racer)).getLocation().getX()<(getArena().getLength()-100)) {
 				getRacersPics().get(getRacers().indexOf(racer)).setLocation((int)racer.getCurrentLocation().getX(),(int)racer.getCurrentLocation().getY());
 			}
 			else {
@@ -272,7 +275,7 @@ public class Mainframe extends JFrame implements Observer {
 			}
 			getRacersPics().get(getRacers().indexOf(racer)).revalidate();
 			getRacersPics().get(getRacers().indexOf(racer)).repaint();
-			System.out.println(racer.getProperties());
+			System.out.println(racer.describeRacer());
 		}
 	}
 	@Override
@@ -281,7 +284,7 @@ public class Mainframe extends JFrame implements Observer {
 		switch (string) {
 		case "FINISHED":
 			arena.getCompletedRacers().add((Racer) o);
-			arena.getActiveRacers().remove((Racer)o);	
+			arena.getActiveRacers().remove((Racer)o);
 			break;
 		case "BROKENDOWN":
 			arena.getBrokenRacers().add((Racer) o);
@@ -291,8 +294,11 @@ public class Mainframe extends JFrame implements Observer {
 			arena.getActiveRacers().remove((Racer)o);	
 			break;
 		case "REPAIRED":
-			arena.getBrokenRacers().add((Racer) o);
+			arena.getBrokenRacers().remove((Racer) o);
 			break;
+		case "Moved":
+				racerMove();
+		
 		default:
 			break;
 		}

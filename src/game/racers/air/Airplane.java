@@ -12,7 +12,7 @@ public class Airplane extends Racer implements AerialRacer{
 	private static int numOfWheels=3;
 	private static double  maxSpeed =885;
 	private static double acceleration=100;
-	private static Color color =Color.Black;
+	private static Color color =Color.BLACK;
 	private Wheeled wheeled;
 	
 	public Airplane(String name, double maxSpeed, double acceleration, Color color) {

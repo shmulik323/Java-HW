@@ -14,7 +14,7 @@ package utilities;
  */
 public class EnumContainer {
 	public enum Color {
-		Red,Green,Blue,Black,Yellow
+		RED,GREEN,BLUE,BLACK,YELLOW
 	}
 	
 	public static enum Vision {
@@ -55,6 +55,6 @@ public class EnumContainer {
 		
 	}
 	public static enum RacerEvent{
-		FINISHED,BROKENDOWN,REPAIRED,DISABLED
+		FINISHED,BROKENDOWN,REPAIRED,DISABLED, Moved
 	}
 }
