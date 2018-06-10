@@ -1,13 +1,12 @@
 package game.arenas;
 
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
+import game.racers.IRacer;
 import game.racers.Racer;
 import utilities.Point;
 /**
@@ -32,7 +31,7 @@ public abstract class Arena {
 		this.setFRICTION(friction);	
 	}
 
-	public abstract void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException ;
+	public abstract void addRacer(IRacer newRacer) throws RacerLimitException, RacerTypeException ;
 	/**
 	 * initializes the race
 	 */

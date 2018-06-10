@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,7 +31,6 @@ import factory.RaceBuilder;
 import game.arenas.Arena;
 import game.racers.Racer;
 import utilities.Point;
-import utilities.EnumContainer.Color;
 
 /**
  * 
@@ -236,12 +233,18 @@ public class Mainframe extends JFrame implements Observer {
 
 	}
 	public void addPicToRace(Racer racer,JLabel label,String racerChoose,String color) {
-		getRacersPics().add(label);
+		int position;
+		if(!getRacersPics().contains(label)) {
+			position = getyPlacement()*(Arena.getMinYGap());
+			getRacersPics().add(label);
+		}
+		else
+			position=label.getVerticalAlignment();
 		ImageIcon imageIcon = new ImageIcon(Mainframe.class.getResource("/factory/Gui/icons/"+racerChoose+returnColor(color)+".png"));
 		imageIcon=new ImageIcon(getScaledImage(imageIcon.getImage(),70,70));
 		getRacersPics().get(arena.getActiveRacers().indexOf(racer)).setIcon(imageIcon);
 		racer.setCurrentLocation(new Point(0,yPlacement*(Arena.getMinYGap())));
-		getRacersPics().get(arena.getActiveRacers().indexOf(racer)).setBounds(0,getyPlacement()*(Arena.getMinYGap()), 70, 70);
+		getRacersPics().get(arena.getActiveRacers().indexOf(racer)).setBounds(0,position, 70, 70);
 		Race_Panel.add(getRacersPics().get(arena.getActiveRacers().indexOf(racer)));
 		setyPlacement(getyPlacement() + 1);
 		getRacersPics().get(arena.getActiveRacers().indexOf(racer)).repaint();

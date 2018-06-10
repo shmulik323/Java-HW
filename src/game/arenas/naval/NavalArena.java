@@ -1,10 +1,9 @@
 package game.arenas.naval;
 
-import java.util.Observable;
-
 import game.arenas.Arena;
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
+import game.racers.IRacer;
 import game.racers.Racer;
 import game.racers.naval.NavalRacer;
 import utilities.EnumContainer.Body;
@@ -34,10 +33,10 @@ public class NavalArena extends Arena{
 	 * function adds a new racer to the arena
 	 * @param newRacer
 	 */
-	public void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException {
+	public void addRacer(IRacer newRacer) throws RacerLimitException, RacerTypeException {
 		String message;
 		if(!(newRacer instanceof NavalRacer)) {
-			 message = "Invalid Racer of type"+" "+'"'+newRacer.className()+'"'+"for "+this.getClass().getSimpleName();
+			 message = "Invalid Racer of type"+" "+'"'+((Racer) newRacer).className()+'"'+"for "+this.getClass().getSimpleName();
 			throw new RacerTypeException(message);
 		}
 		if(this.getActiveRacers().size()==this.getMAX_RACERS()) {
@@ -46,7 +45,7 @@ public class NavalArena extends Arena{
 		}
 
 		else {
-			this.getActiveRacers().add(newRacer);
+			this.getActiveRacers().add((Racer) newRacer);
 		}
 	}
 	/**

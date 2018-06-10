@@ -1,13 +1,15 @@
 package game.arenas.air;
 
-import java.util.Observable;
-
 import game.arenas.Arena;
 import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
+import game.racers.IRacer;
 import game.racers.Racer;
 import game.racers.air.AerialRacer;
-import utilities.EnumContainer.*;
+import utilities.EnumContainer.Height;
+import utilities.EnumContainer.Vision;
+import utilities.EnumContainer.Weather;
+import utilities.EnumContainer.Wind;
 /**
  * @author shmuel moha 204568323
  * @author alex weizman 314342064
@@ -36,10 +38,10 @@ public class AerialArena extends Arena{
  * adds a new racer to the arena
  * @param newRacer
  */
-	public void addRacer(Racer newRacer) throws RacerLimitException, RacerTypeException {
+	public void addRacer(IRacer newRacer) throws RacerLimitException, RacerTypeException {
 		String message;
 		if(!(newRacer instanceof AerialRacer)) {
-			 message = "Invalid Racer of type"+" "+'"'+newRacer.className()+'"'+"for "+this.getClass().getSimpleName();
+			 message = "Invalid Racer of type"+" "+'"'+((Racer) newRacer).className()+'"'+"for "+this.getClass().getSimpleName();
 			throw new RacerTypeException(message);
 		}
 		if(this.getActiveRacers().size()==this.getMAX_RACERS()) {
@@ -48,7 +50,7 @@ public class AerialArena extends Arena{
 		}
 
 		else {
-			this.getActiveRacers().add(newRacer);
+			this.getActiveRacers().add((Racer) newRacer);
 		}
 	}
 	/**

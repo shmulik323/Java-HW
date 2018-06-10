@@ -7,8 +7,15 @@ public class ColoredRacer extends RacerDecorator {
 
 	public ColoredRacer(IRacer racerToDecorat,Color color) {
 		super(racerToDecorat);
-		// TODO Auto-generated constructor stub
+		racerToDecorat.addAttribute("color", color);
 	}
-
+	@Override
+	public void addAttribute(String name, Object obj) {
+		super.addAttribute(name, obj);
+	}
+	@Override
+	public void introduce() {
+		super.introduce();
+	}
 
 }

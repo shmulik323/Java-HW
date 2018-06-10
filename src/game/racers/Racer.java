@@ -1,9 +1,8 @@
 package game.racers;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Observer;
 
-import factory.Gui.Mainframe;
 import game.arenas.Arena;
 import game.racers.decorator.RacerClone;
 import utilities.EnumContainer.Color;
@@ -41,13 +40,23 @@ public abstract class Racer extends IRacer implements Runnable,RacerClone,Compar
 		this.properties.put("name", this.name);
 		this.properties.put("maxSpeed", this.maxSpeed);
 		this.properties.put("acceleration", this.acceleration);
-		this.properties.put("color", this.color);
+		this.properties.put("color",new ArrayList<Color>());
+		((ArrayList<Color>) this.properties.get("color")).add(this.color);
 		this.properties.put("SerialNumber", this.SerialNumber);
 	}
 	@Override
 	public void addAttribute(String name, Object obj) {
-		// TODO Auto-generated method stub
-
+		if(name=="color") {
+			((ArrayList<Color>) this.properties.get("color")).add((Color)obj);
+			this.color=(Color)obj;
+			}
+		else
+			if(!this.properties.containsKey("wheels")) {
+				this.properties.put("wheels", new ArrayList<Integer>());
+				((ArrayList<Integer>) this.properties.get("wheels")).add((int) obj);
+				}
+			else
+				((ArrayList<Integer>) this.properties.get(name)).add((int)obj);
 	}
 	/* (non-Javadoc)
 	 * @see game.racers.decorator.RacerClone#clone()
@@ -148,7 +157,7 @@ public abstract class Racer extends IRacer implements Runnable,RacerClone,Compar
 	public abstract String describeSpecific();//abstract method 
 
 	public void introduce() {
-		System.out.println("["+this.className()+"]"+this.describeRacer()+this.describeSpecific());
+		System.out.println(properties);
 
 	}
 	public String className() {
@@ -347,7 +356,7 @@ public abstract class Racer extends IRacer implements Runnable,RacerClone,Compar
 		if(this.arena.getCompletedRacers().contains(this)) {return true;}
 		return false;
 	}
-	@SuppressWarnings("deprecation")
+
 	@Override
 	public synchronized void run() {
 		while(!arena.getCompletedRacers().contains(this) && !arena.getDisabledRacers().contains(this)) {

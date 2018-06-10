@@ -6,12 +6,14 @@ public abstract class RacerDecorator extends IRacer {
 	IRacer decoratedRacer;
 
 	public RacerDecorator(IRacer racerToDecorat) {
-		// TODO Auto-generated constructor stub
+		this.decoratedRacer=racerToDecorat;
 	}
 	@Override
 	public void addAttribute(String name, Object obj) {
-		// TODO Auto-generated method stub
-		
+		this.decoratedRacer.addAttribute(name, obj);
 	}
-
+	@Override
+	public void introduce() {
+		this.decoratedRacer.introduce();
+	}
 }

@@ -16,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import game.arenas.Arena;
@@ -24,13 +25,8 @@ import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
 import game.racers.decorator.CloneFactory;
 import utilities.EnumContainer.Color;
-import javax.swing.JTextField;
 
-public class PrototypeDialog extends JDialog{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class DecoratorDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JComboBox<String> cmbRegisteredRacers;
 	private JLabel prototype=new JLabel("Registered Racers:");
@@ -39,14 +35,14 @@ public class PrototypeDialog extends JDialog{
 	private Arena arena;
 	private JButton okButton;
 	private JButton cancelButton;
-	private String cloneChoice;
+	private String decorateChoice;
 	private JPanel NameAndSpeed;
 	private JComboBox<String> cmbColor=new JComboBox<>();
 	private JLabel lblChangeColor;
 	private JComboBox<Color> cmbChangeColor;
-	private JLabel lblChangeNumber;
-	private JTextField txtChangenumber;
-	public PrototypeDialog(AddRacerDialog addRacer,Mainframe frame) {
+	private JLabel lblChangewheels;
+	private JTextField txtChangewheels;
+	public DecoratorDialog(AddRacerDialog addRacer,Mainframe frame) {
 		arena=Mainframe.getArena();
 		FRAME=frame;
 		setTitle("Copy Registered Racer");
@@ -90,12 +86,12 @@ public class PrototypeDialog extends JDialog{
 		}
 		NameAndSpeed.add(cmbChangeColor);
 		
-		lblChangeNumber = new JLabel("Change Number");
-		NameAndSpeed.add(lblChangeNumber);
+		lblChangewheels = new JLabel("Add Wheels");
+		NameAndSpeed.add(lblChangewheels);
 		
-		txtChangenumber = new JTextField();
-		NameAndSpeed.add(txtChangenumber);
-		txtChangenumber.setColumns(10);
+		txtChangewheels = new JTextField();
+		NameAndSpeed.add(txtChangewheels);
+		txtChangewheels.setColumns(10);
 		
 		for (Color color : Arrays.asList(Color.values())) {
 			cmbColor.addItem(color.toString());
@@ -136,22 +132,19 @@ public class PrototypeDialog extends JDialog{
 	public void OkactionPerformed(ActionEvent e,AddRacerDialog addRacer) throws StringIndexOutOfBoundsException, RacerLimitException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, RacerTypeException {
 		String action = e.getActionCommand();
 		if (action.equals("OK")) {
-			cloneChoice=(String) cmbRegisteredRacers.getSelectedItem();
+			decorateChoice=(String) cmbRegisteredRacers.getSelectedItem();
 			CloneFactory cloneFactory=new CloneFactory();
 			Racer newRacer;
 			for(Racer racer:Mainframe.getRacers()) {
-				if(cloneChoice.contains(racer.getName())) {
-					newRacer=cloneFactory.getRacer(racer);
-					newRacer.setProperties((Hashtable<String, Object>)racer.getProperties().clone());
-					newRacer.setColor((Color)cmbChangeColor.getSelectedItem());
-					newRacer.getProperties().replace("color", (Color)cmbChangeColor.getSelectedItem());
-					FRAME.getArena().addRacer(newRacer);
-					FRAME.getRacers().add(newRacer);
-					JLabel label=new JLabel();
-					FRAME.addPicToRace(newRacer, label, newRacer.getClass().getSimpleName(), cmbChangeColor.getSelectedItem().toString());
-					break;
+				if(decorateChoice.contains(racer.getName())) {
+					if(cmbChangeColor.getSelectedItem()!=racer.getColor())
+						racer.addAttribute("color", (Color)cmbChangeColor.getSelectedItem());
+					if(txtChangewheels.getText()!=null)
+						racer.addAttribute("wheels", Integer.valueOf(txtChangewheels.getText()));
+					FRAME.addPicToRace(racer, FRAME.getRacersPics().get(FRAME.getRacers().indexOf(racer)), racer.className(), racer.getColor().toString());
+					FRAME.getRacersPics().get(FRAME.getRacers().indexOf(racer)).revalidate();
+					FRAME.getRacersPics().get(FRAME.getRacers().indexOf(racer)).repaint();
 				}
-				
 			}
 		}
 
@@ -164,5 +157,5 @@ public class PrototypeDialog extends JDialog{
 			combo.addItem(racer.showRacer());
 		return combo;
 	}
-	
+
 }

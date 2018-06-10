@@ -2,7 +2,6 @@ package factory.Gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -30,11 +29,13 @@ import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
 import game.racers.decorator.CloneFactory;
-import game.racers.land.Car;
-import utilities.EnumContainer.Color;
 
 public class BuildArenaDialog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JLabel lblChooseArena;
 	private JComboBox<String> cmbArena;

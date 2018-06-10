@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -26,10 +25,13 @@ import game.arenas.exceptions.RacerLimitException;
 import game.arenas.exceptions.RacerTypeException;
 import game.racers.Racer;
 import utilities.EnumContainer.Color;
-import utilities.Point;
 
 public class AddRacerDialog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtRacerName;
 	private JLabel lblRacerName;
@@ -53,6 +55,7 @@ public class AddRacerDialog extends JDialog {
 	private static RaceBuilder builder = RaceBuilder.getInstance();
 	private Arena arena;
 	private JButton prototype=new JButton("Registered Racers");
+	private JButton decorator=new JButton("Decorator");
 	/**
 	 * Create the dialog.
 	 * @param mainframe 
@@ -181,11 +184,20 @@ public class AddRacerDialog extends JDialog {
 				);
 		nameAndSpeedPanel.setLayout(gl_nameAndSpeedPanel);
 
-
+		JPanel clickPanel=new JPanel();
+		clickPanel.setLayout(new BorderLayout());
+		clickPanel.add(decorator, BorderLayout.NORTH);
 		JPanel buttonPane = new JPanel();
+		clickPanel.add(buttonPane, BorderLayout.SOUTH);
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
+		getContentPane().add(clickPanel, BorderLayout.SOUTH);
+		decorator.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				decoratorActionPerformed(e);
+			}
+		});
 		okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -217,6 +229,11 @@ public class AddRacerDialog extends JDialog {
 
 
 
+	}
+	public void decoratorActionPerformed(ActionEvent e) {
+		DecoratorDialog dialog=new DecoratorDialog(this,FRAME);
+		dialog.setVisible(true);
+		setVisible(false);
 	}
 	public void prototypeButtonActionPerformed(ActionEvent e) {
 		PrototypeDialog dialog=new PrototypeDialog(this,FRAME);
